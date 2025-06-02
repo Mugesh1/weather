@@ -1,6 +1,11 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "schematics": {
+    "@ngrx/schematics": {
+      "collection": "@ngrx/schematics"
+    }
+  },
   "newProjectRoot": "projects",
   "projects": {
     "ngrx": {
@@ -30,23 +35,29 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/highlight.js/styles/default.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/animate.css/animate.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1mb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "5kb",
+                  "maximumError": "10kb"
                 }
+                
               ],
               "outputHashing": "all"
             },
@@ -100,5 +111,11 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "9a0aa51e-7c8e-4fb8-a7f2-e4766480b376",
+    "schematicCollections": [
+      "@ngrx/schematics"
+    ]
   }
 }

@@ -1,0 +1,11 @@
+.weather-effect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10 !important;  // Ensure visibility
+  pointer-events: none;
+  filter: blur(10px);       // Soft fog effect
+  opacity: 1;
+}

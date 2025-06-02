@@ -1,0 +1,22 @@
+<div class="container my-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <h4 class="card-title mb-3">Add New Customer</h4>
+
+      <div class="input-group">
+        <input
+          type="text"
+          #nameInput
+          class="form-control"
+          placeholder="Enter customer name"
+        />
+        <button
+          class="btn btn-primary"
+          (click)="addCustomer(nameInput.value); nameInput.value=''"
+        >
+          Create
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,262 @@
-/* You can add global styles to this file, and also import other style files */
+/* GLOBAL RESET AND DEFAULTS */
+html,
+body,
+app-root {
+  height: 100%;
+  margin: 0;
+  background-color: transparent;
+  overflow: auto;
+  position: relative;
+  color: black;
+  transition: background 0.5s ease, color 0.5s ease;
+}
+
+/* WEATHER THEMES */
+body.sunrise {
+  background: linear-gradient(to top, #ffcf71, #2376dd);
+  color: #333;
+}
+
+body.day {
+  background: linear-gradient(to top, #87ceeb, #ffffff);
+  color: #222;
+}
+
+body.sunset {
+  background: linear-gradient(to top, #f3904f, #3b4371);
+  color: #fffaf0;
+}
+
+body.night {
+  background: #0f2027;
+  color: #f0f0f0;
+}
+
+body.rain {
+  background: linear-gradient(to top, #4b6cb7, #182848);
+  color: #e0e0e0;
+}
+
+body.snow {
+  background: linear-gradient(to top, #d7dde8, #ffffff);
+  color: #333;
+}
+
+body.cloud {
+  background: linear-gradient(to top, #c9d6ff, #e2e2e2);
+  color: #444;
+}
+
+/* NEW: HEAVY RAIN + THUNDERSTORM */
+body.heavyrain {
+  background: linear-gradient(to top, #2c3e50, #000000);
+  color: #dcdcdc;
+}
+/* NEW WEATHER EFFECTS */
+
+/* Mist */
+body.mist {
+  background:linear-gradient(to top, #858585, #17cbdd);
+  color: #555;
+}
+
+/* Fog */
+body.fog {
+  background: linear-gradient(to top, #403f3f, #ffffff);
+  color: #666;
+}
+
+/* Haze */
+body.haze {
+  background: linear-gradient(to top, #5e4e4e, #4c3838);
+  color: #666;
+}
+
+/* Dust */
+body.dust {
+  background: linear-gradient(to top, #858585, #17cbdd);
+  color: #5a4d22;
+}
+
+/* Scattered Cloud */
+body.scatteredCloud {
+  background: linear-gradient(to top, #a0b9f0, #d7dff9);
+  color: #333;
+}
+
+/* Broken Cloud */
+body.brokenCloud {
+  background: linear-gradient(to top, #8a9ba8, #c7d2d9);
+  color: #444;
+}
+
+/* Overcast Cloud */
+/* Overcast Cloud enhancements */
+body.OvercastCloud {
+  background: linear-gradient(to top, #4e5560, #7e8892); // darker tones
+  color: #eee;
+
+  button {
+    background-color: #dcdfe3;
+    color: #222;
+    border: 1px solid #999;
+  }
+
+  .doc-style pre > code {
+    background-color: #f0f1f2;
+    color: #222;
+    border: 1px solid #aaa;
+    padding: 0.5rem;
+    border-radius: 4px;
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+
+
+/* Optional: lightning flash effect */
+body.heavyrain.flash::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 9998;
+  pointer-events: none;
+  animation: flash 0.15s ease-in-out;
+}
+
+body.flash {
+  animation: screen-flash 0.15s ease-in-out;
+}
+
+@keyframes screen-flash {
+  0% {
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}
+
+@keyframes flash {
+  0% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* APPLY THEME COLOR TO EVERYTHING INSIDE BODY */
+body.sunrise *,
+body.day *,
+body.sunset *,
+body.night *,
+body.rain *,
+body.snow *,
+body.cloud *,
+body.heavyrain * {
+  color: inherit !important;
+}
+
+/* DOC-STYLED CONTENT */
+.doc-style {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: inherit;
+}
+
+.doc-style h2,
+.doc-style h3,
+.doc-style h4,
+.doc-style h5 {
+  margin-top: 1.5rem;
+  font-weight: 600;
+  color: inherit;
+}
+
+.doc-style ul,
+.doc-style ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.doc-style table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: inherit;
+}
+
+.doc-style table th,
+.doc-style table td {
+  border: 1px solid #ccc;
+  padding: 8px 10px;
+  text-align: left;
+  background: #fff;
+  color: inherit;
+}
+
+.doc-style table th {
+  background: #f3f3f3;
+}
+
+/* DARK TABLE STYLES FOR NIGHT + SUNSET + HEAVYRAIN */
+body.night .doc-style table th,
+body.night .doc-style table td,
+body.sunset .doc-style table th,
+body.sunset .doc-style table td,
+body.heavyrain .doc-style table th,
+body.heavyrain .doc-style table td {
+  background: #1e1e1e;
+  color: #f0f0f0;
+  border-color: #555;
+}
+
+body.night .doc-style table th,
+body.sunset .doc-style table th,
+body.heavyrain .doc-style table th {
+  background: #333;
+}
+
+body.sunrise *:not(pre):not(code):not(button),
+body.day *:not(pre):not(code):not(button),
+body.heavyrain *:not(pre):not(code):not(button) {
+  color: inherit !important;
+}
+
+body.rain button,
+body.heavyrain button {
+  color: #000; 
+  background-color: #fff; 
+  border: 1px solid #000;
+}
+
+body.rain .doc-style pre > code,
+body.heavyrain .doc-style pre > code {
+  color: #000000 !important;
+}
+
+body.rain button,
+body.heavyrain button {
+  color: #000 !important;
+  background-color: #f0f0f0;
+  border: 1px solid #333;
+}
+
+.weather-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -10 !important;
+  pointer-events: none; // makes it non-interactive
+}

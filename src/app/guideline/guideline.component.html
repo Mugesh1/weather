@@ -1,0 +1,238 @@
+<div appHighlight class="doc-style container py-4">
+  <h2 class="mb-4">NgRx: Redux Library for Angular</h2>
+  <p><strong>NgRx</strong> is a library — it provides state management utilities inspired by Redux to help manage and centralize application state in Angular apps.</p>
+  
+  <h3 class="mt-5 mb-3">Core Concepts</h3>
+  <ul class="list-group mb-4">
+    <li class="list-group-item"><strong>Action:</strong> Event triggered &#40;Add, Edit, View, etc.&#41;</li>
+    <li class="list-group-item"><strong>Reducer:</strong> Listens to actions and manages state updates by comparing old and new states.</li>
+    <li class="list-group-item"><strong>Store:</strong> Container that holds the entire application state. Use <code>selector</code> to access specific data.</li>
+    <li class="list-group-item"><strong>Effects:</strong> Handles side effects like API calls or other asynchronous operations.</li>
+  </ul>
+  
+  <h3 class="mt-5 mb-3">Step-by-Step Setup</h3>
+  
+  <h4 class="mt-4 mb-2">Step 1: Add Schematics</h4>
+  <pre><code>ng add &#64;ngrx/schematics</code></pre>
+  <p>This helps generate NgRx components:</p>
+  <ul class="list-group mb-4">
+    <li class="list-group-item"><code>ng g action &#123;name&#125;</code></li>
+    <li class="list-group-item"><code>ng g selector &#123;name&#125;</code></li>
+    <li class="list-group-item"><code>ng g reducer &#123;name&#125;</code></li>
+  </ul>
+  
+  <h4 class="mt-4 mb-2">Step 2: Set Default Collection</h4>
+  <pre><code>ng config cli.defaultCollection &#64;ngrx/schematics</code></pre>
+  <p><strong>Note:</strong> For Angular v13+, use:</p>
+  <pre><code>ng config schematics.&#64;ngrx/schematics.collection &#64;ngrx/schematics</code></pre>
+  
+  <h4 class="mt-4 mb-2">Step 3: Install Dependencies</h4>
+  <pre><code>
+  npm install &#64;ngrx/store --save
+  npm install &#64;ngrx/effects --save
+  npm install &#64;ngrx/entity --save
+  npm install &#64;ngrx/store-devtools --save
+  </code></pre>
+  
+  <h4 class="mt-4 mb-2">Step 4: Generate Store</h4>
+  <pre><code>ng g store &#123;name&#125; --root --module app.module.ts</code></pre>
+  
+  <h4 class="mt-4 mb-2">Step 5: Create Model</h4>
+  <pre><code>ng g class models/&#123;name&#125;</code></pre>
+  
+  <h4 class="mt-4 mb-2">Step 6: Create Action</h4>
+  
+  <p>Run the command:</p>
+  <pre><code>ng g action customer</code></pre>
+  
+  <p>This will create an Action file.</p>
+  
+  <p><strong>Action takes two parameters:</strong></p>
+  <ol class="mb-4">
+    <li><strong>Action Name:</strong><br>
+        Example:<br>
+        <code>&#91;Customer&#93; Add Customers</code>
+    </li>
+    <li><strong>Data &#40;optional&#41;:</strong><br>
+        Example:<br>
+        <code>&#123; customer &#125;</code>
+    </li>
+  </ol>
+  
+  <p>Together, it would look like:</p>
+  <pre><code>&#91;Customer&#93; Add Customers, &#123; customer &#125;</code></pre>
+  
+  <ul class="list-group mb-4">
+    <li class="list-group-item"><code>&#91;Customer&#93;</code> – Represents the feature or state name</li>
+    <li class="list-group-item"><code>Add Customers</code> – Describes the action</li>
+    <li class="list-group-item"><code>&#123; customer &#125;</code> – Payload or data being passed</li>
+  </ul>
+  
+  <h5 class="mt-4 mb-3">Types of Action Configurations</h5>
+  
+  <p><strong>1. Using <code>createAction</code> &#40;for simple actions&#41;:</strong></p>
+  <pre><code class="typescript">export const addCustomer = createAction&#40;
+    '&#91;Customer&#93; Add Customer',
+    props&lt;&#123; customer: Customer &#125;&gt;&#40;&#41;
+  &#41;;
+  </code></pre>
+  
+  <p><strong>2. Using <code>createActionGroup</code> &#40;for grouped actions&#41;:</strong></p>
+  <pre><code class="typescript">export const addCustomers = createActionGroup&#40;&#123;
+    source: 'Customer',
+    events: &#123;
+      'Add Customers': props&lt;&#123; customer: Customer &#125;&gt;&#40;&#41;,
+      'Load Customers': emptyProps&#40;&#41;,
+    &#125;
+  &#125;&#41;;
+  </code></pre>
+  
+  <h5 class="mt-4 mb-3">Extras</h5>
+  <ul class="list-group mb-4">
+    <li class="list-group-item"><code>props&lt;&#123; data &#125;&gt;&#40;&#41;</code> – Passes data to the reducer</li>
+    <li class="list-group-item"><code>emptyProps&#40;&#41;</code> – For actions with no payload &#40;e.g., loading state&#41;</li>
+  </ul>
+  
+  <h4 class="mt-4 mb-2">Step 7:</h4>
+  
+  <p>Run <code>ng g reducer customer</code><br>
+  Will Create a Reducer</p>
+  
+  <ol class="mb-4">
+    <li>
+      This defines the shape of your global state for this feature (likely in a <code>customer.reducer.ts</code> file). The state has one property: <code>customer</code>, which is an array of <code>Customer</code> objects.
+      <pre><code class="typescript">export interface State &#123;
+    customer: Customer&#91;&#93;;
+  &#125;
+  </code></pre>
+    </li>
+  
+    <li>
+      This defines the initial value of the state. At app start, the <code>customer</code> array is empty (no customers yet).
+      <pre><code class="typescript">export const initialState: State = &#123;
+    customer: &#91;&#93;
+  &#125;;
+  </code></pre>
+    </li>
+  
+    <li>
+      Reducer Function
+      <pre><code class="typescript">export const reducer = createReducer(
+    initialState,
+    on(CustomerActions.addCustomer, (state: State, &#123; customer &#125;) => (&#123;
+      ...state,
+      customer: [ ...state.customer, customer ]
+    &#125;)
+    )
+  );
+  </code></pre>
+  
+      <pre><p><code>createReducer(initialState, ...)</code>  The Above function creates a reducer with a given initial state.</p></pre>
+  
+      <p>Reducers respond to actions and return a new state based on the current state and the action payload.</p>
+  
+      <ol>
+        <li>
+          <code>on(CustomerActions.addCustomer, ...)</code><br>
+          <strong>on()</strong> defines what to do when the <code>addCustomer</code> action is dispatched.<br>
+          It listens for the <code>addCustomer</code> action from your <code>CustomerActions</code>.
+        </li>
+  
+        <li>
+          Reducer Function <code>(state, &#123; customer &#125;) =&gt; ( ... )</code><br>
+          When <code>addCustomer</code> is dispatched, this function is called with:<br>
+          <code>state</code>: the current state (object with customer array).<br>
+          <code>&#123; customer &#125;</code>: the payload from the action (likely defined like <code>addCustomer(&#123; customer: Customer &#125;)</code>).
+        </li>
+  
+        <li>
+          Return statement:<br>
+          <code>return &#123; ...state, customer: [ ...state.customer, customer ] &#125;</code><br>
+          You return a new state object:<br>
+          - Spread the existing state to keep all properties (<code>...state</code>)<br>
+          - Replace the <code>customer</code> property with a new array that:<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;• Copies all existing customers (<code>...state.customer</code>)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;• Adds the new customer to the end.<br>
+          This ensures immutability – the state is not modified in place, but a new state object is returned.
+        </li>
+      </ol>
+    </li>
+  </ol>
+  
+  <h4 class="mt-4 mb-2">Step 8: <code>ng g selector &#123;name&#125;</code></h4>
+  
+  <ol class="mb-4">
+    <li>
+      <p>Import selector helpers:</p>
+      <pre><code>import &#123; createFeatureSelector, createSelector &#125; from '&#64;ngrx/store';</code></pre>
+      <ul>
+        <li><code>createFeatureSelector</code>: A helper to select a slice of the state tree by feature key.</li>
+        <li><code>createSelector</code>: A function to build memoized selectors based on one or more input selectors.</li>
+      </ul>
+    </li>
+  
+    <li>
+      <p>Import the customer reducer with alias:</p>
+      <pre><code>import * as customerReducer from '../../store/reducer/customer.reducer';</code></pre>
+      <p>This imports everything from the <code>customer.reducer</code> file and aliases it as <code>customerReducer</code>, allowing access to:</p>
+      <ul>
+        <li><code>customerFeatureKey</code></li>
+        <li><code>CustomerState</code></li>
+      </ul>
+    </li>
+  
+    <li>
+      <p>Create a feature selector:</p>
+      <pre><code class="typescript">export const SelectCustomerState = createFeatureSelector&lt;customerReducer.CustomerState&gt;(
+    customerReducer.customerFeatureKey
+  );</code></pre>
+      <p><code>createFeatureSelector&lt;T&gt;(key)</code> creates a selector for a feature slice of the state.</p>
+      <p>It expects a feature key (<code>customerFeatureKey</code>), which tells NgRx where in the global state tree the customer state lives.</p>
+      <p><code>customerReducer.CustomerState</code> is the type of the state in that feature.</p>
+    </li>
+  
+    <li>
+      <p>Create a selector to select customers:</p>
+      <pre><code class="typescript">export const selectCustomers = createSelector(
+    SelectCustomerState,
+    (state: customerReducer.CustomerState) =&gt; state.customer
+  );</code></pre>
+      <p>This selector depends on <code>SelectCustomerState</code>.</p>
+      <p>Once it gets the <code>CustomerState</code>, it accesses the <code>.customer</code> property (e.g., an array of customers).</p>
+      <p><code>selectCustomers</code> can now be used in components to retrieve the actual list of customers from the store.</p>
+    </li>
+  </ol>
+  
+  <table border="1" cellpadding="6" cellspacing="0" style="border-collapse: collapse; width: 100%;" class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Operation</th>
+        <th>What You Use in Component</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Add</strong></td>
+        <td><code>store.dispatch(add())</code></td>
+        <td>Push new data into state</td>
+      </tr>
+      <tr>
+        <td><strong>Delete</strong></td>
+        <td><code>store.dispatch(delete())</code></td>
+        <td>Remove data from state</td>
+      </tr>
+      <tr>
+        <td><strong>Update</strong></td>
+        <td><code>store.dispatch(update())</code></td>
+        <td>Modify existing data</td>
+      </tr>
+      <tr>
+        <td><strong>View</strong></td>
+        <td><code>store.select(selector)</code></td>
+        <td>Read or observe data from the store</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

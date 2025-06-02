@@ -1,0 +1,822 @@
+<div class="content-wrapper">
+
+<div class="toc-container">
+  <h2>JavaScript Concepts</h2>
+  <ol>
+    <li>
+      <a (click)="selectTopic('object')" [class.active]="selectedTopic === 'object'">Objects</a>
+      <ul  *ngIf="selectedTopic === 'object'">
+        <li><a (click)="selectSubTopic('create-object')" [class.active]="selectedTopic === 'object'">Create Object in
+            two way</a></li>
+        <li><a (click)="selectSubTopic('mixing-functions')" [class.active]="selectedTopic === 'object'">Mixing data and
+            Functions</a></li>
+      </ul>
+    </li>
+    <li><a (click)="selectTopic('classes')" [class.active]="selectedTopic === 'classes'">Classes</a></li>
+    <li><a (click)="selectTopic('Constructors')" [class.active]="selectedTopic === 'Constructors'">Constructor</a></li>
+    <li><a (click)="selectTopic('Methods')" [class.active]="selectedTopic === 'Methods'">Methods</a></li>
+    <li>
+      <a (click)="selectTopic('inheritance')" [class.active]="selectedTopic === 'inheritance'">Basic of Inheritance</a>
+      <ul *ngIf="selectedTopic === 'inheritance'">
+        <li><a (click)="selectSubTopic('super')" [class.active]="selectedTopic === 'inheritance'">Super Keyword</a></li>
+      </ul>
+    </li>
+    <li><a (click)="selectTopic('static')" [class.active]="selectedTopic === 'static'">Static Property & Method</a></li>
+    <li><a (click)="selectTopic('GettersSetter')" [class.active]="selectedTopic === 'GettersSetter'">Getter & Setter</a>
+    </li>
+    <li><a (click)="selectTopic('classFieldsMethods')" [class.active]="selectedTopic === 'classFieldsMethods'">class
+        Fields & Methods</a></li>
+    <li><a (click)="selectTopic('staticini')" [class.active]="selectedTopic === 'staticini'">Static Initialization
+        Block</a></li>
+    <li><a (click)="selectTopic('exercise')" [class.active]="selectedTopic === 'exercise'">Exercise</a></li>
+    <li><a (click)="selectTopic('this')" [class.active]="selectedTopic === 'this'">this Keyword</a></li>
+    <li><a (click)="selectTopic('proto')" [class.active]="selectedTopic === 'proto'">Prototype</a></li>
+    <li><a (click)="selectTopic('new')" [class.active]="selectedTopic === 'new'">new Keyword</a></li>
+    <li>
+      <a (click)="selectTopic('CallApply')" [class.active]="selectedTopic === 'CallApply'">Call,Apply & Bind</a>
+      <ul *ngIf="selectedTopic === 'CallApply'">
+        <li><a (click)="selectSubTopic('apply')" [class.active]="selectedTopic === 'CallApply'">Apply</a></li>
+        <li><a (click)="selectSubTopic('bind')" [class.active]="selectedTopic === 'CallApply'">Bind</a></li>
+      </ul>
+    </li>
+    <!-- etc. -->
+  </ol>
+</div>
+
+
+<div class="container">
+  <div *ngIf="selectedTopic === 'object'">
+    <h3 ##object class="mb-3">Object</h3>
+    <ul class="list-group mb-4">
+      <li class="list-group-item">Also Known as POJO - Plain Old javascript Object</li>
+      <li class="list-group-item">Collection of Key/Value pairs</li>
+      <li class="list-group-item">Key defined in objects are stringified in nature</li>
+      <li class="list-group-item">Value can be of any data type or even can be in function too.</li>
+      <li class="list-group-item list-group-item-secondary fw-bold">Notes</li>
+      <li class="list-group-item">Properties that don't exist always return undefined</li>
+      <li class="list-group-item">In other language it throws error, but in JS it return undefined</li>
+      <li class="list-group-item list-group-item-danger fw-bold">Cons</li>
+      <li class="list-group-item">
+        <p class="mb-0">Difficult to maintain so many object.</p>
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="selectedSubTopic === 'create-object' && selectedTopic === 'object'">
+
+    <h4 class="mb-3">Create Object in two way</h4>
+    <ol class="mb-4 ps-4">
+      <li>Defining &#123;&#125;</li>
+      <li>using <strong>new</strong> keyword =&gt; new Object()</li>
+    </ol>
+    <p class="mb-2">Example:</p>
+    <div class="code bg-light border rounded p-3 mb-4">
+      <pre class="mb-0"><code class="language-typescript">
+    const test=&#123;&#125;;
+    typeof(test) // object
+    
+    const test=new Object();
+    typeof(test) // object
+        </code></pre>
+    </div>
+  </div>
+  <div *ngIf="selectedSubTopic === 'mixing-functions' && selectedTopic === 'object'">
+    <h4 class="mb-3">Mixing data and Functions</h4>
+    <p>We can have multiple function in one POJO ie. Object</p>
+    <hr />
+  </div>
+  <div *ngIf="selectedTopic === 'classes'">
+    <h3 class="mb-3">Classes</h3>
+    <p>Classes are "blueprint" of Functionality.</p>
+    <p>Defined by <strong>class</strong> keyword</p>
+    <p>Used to create pattern/Receipe. Sometimes used to generate those pattern/Receipe via Instance</p>
+
+    <div class="code bg-light border rounded p-3 mb-4">
+      <p>Example:</p>
+      <pre><code>
+    Receipe / Pattern
+           &uarr;
+    Keyword &larr; class Addition &#123;
+      getSum()&#123;
+        return a + strong;
+      &#125;
+    &#125;
+      </code></pre>
+
+      <pre><code>
+    // Instantiation
+    'add' Variable
+        &uarr;                 
+    let add = new Addition(); &rarr; Using new keyword created instance of class Addition 
+    add.a = 2;
+    add.strong = 3;
+    add.sum(); // 5
+      </code></pre>
+
+      <p>Defines a methods each instance of Addition has</p>
+      <strong>Notes:</strong>
+      <p>Should be UpperCamelCase</p>
+      <p>Reduces confusion between triangle (Individual Triangle) and Triangle (class which define all triangle)</p>
+      <p>Class itself is object</p>
+
+      <pre><code>
+    let you = new Your(); 
+    typeof(you) &rarr; Object
+    //JS knows its a "instanceof" class
+    Example 1:
+    you instanceof Your; // true
+    Example 2:
+    [1,2,3] instanceof Array; // true
+      </code></pre>
+    </div>
+  </div>
+  <div *ngIf="selectedTopic === 'Constructors'">
+    <h3 class="mb-3">Constructors</h3>
+    <ul class="list-group mb-4">
+      <li class="list-group-item">A special function that creates and initializes instance of a class</li>
+      <li class="list-group-item">Called whenever instance of class get created</li>
+      <li class="list-group-item">Define keyword "constructor"</li>
+    </ul>
+
+    <strong>Notes :</strong>
+    <p>Used to Validate Data and Assign Properties</p>
+
+    <div class="code bg-light border rounded p-3 mb-4">
+      <pre><code>
+  Simple Class:
+  class Operators&#40;&#41;&#123;
+    getSum&#40;&#41;&#123;
+      return this.a + this.strong;
+    &#125;
+  &#125;
+  
+  Earlier we used to assign the value in a way like &darr;
+  let func = new Operators&#40;&#41;;
+  func.a = 5;
+  func.strong = 10;
+  func.sum&#40;&#41; // output:15
+  
+  whereas now with the help of constructor 
+  class Operators&#40;&#41;&#123;
+    constructor&#40;a,strong&#41;&#123;
+      this.a = a;
+      this.strong = strong;
+    &#125;
+    getSum&#40;&#41;&#123;
+      return this.a + this.strong;
+    &#125;
+  &#125;
+  
+  Now instead of assigning individually i Just pass the value as argument in constructor
+  let func = new Operators&#40;5,10&#41;; // a=5 and strong=15
+  func.sum&#40;&#41; // output:15
+    </code></pre>
+    </div>
+
+    <h3 class="mb-3">Example</h3>
+    <div class="code bg-light border rounded p-3 mb-4">
+      <pre><code>
+  class BankAccount&#123;
+    constructor&#40;accNum, accNme, bal&#41;&#123;
+      this.accntNum = accNum;
+      this.accntNme = accNme;
+      this.baln = bal;
+    &#125;
+    
+    getWithDrew&#40;amt&#41;&#123;
+      if&#40;this.baln &lt; amt&#41;&#123;
+        return `Insufficient Balance`
+      &#125; else &#123;
+        return `Withdrawal amount is $&#123;amt&#125; and remaining balance is $&#123;this.baln - amt&#125;`;
+      &#125;
+    &#125;
+    
+    getDeposit&#40;amt&#41;&#123;
+      return `Amount Deposited is $&#123;amt&#125; , available balance of $&#123;this.accntNum&#125; is  $&#123;this.baln + amt&#125; `;
+    &#125;
+    
+    getDetails&#40;&#41;&#123;
+     return `Account Number is $&#123;this.accntNum&#125; and Total Balance is $&#123;this.baln&#125;`;
+    &#125;
+    
+  &#125;
+  
+  let bnk = new BankAccount&#40;12345, "Mugesh", 5000&#41;;
+  bnk.getWithDrew&#40;1000&#41;; // Withdrawal amount is 1000 and remaining balance is 4000
+  bnk.getDeposit&#40;10000&#41;; // Amount Deposited is 10000 , available balance of 12345 is  15000
+    </code></pre>
+    </div>
+  </div>
+  <div *ngIf="selectedTopic === 'Methods'">
+    <h3 class="mb-3">Methods</h3>
+    <div class="code bg-light border rounded p-3 mb-4">
+      <pre><code>
+class Operation &#123;
+  getSumTotal&#40;&#41; &#123;
+    return this.a;
+  &#125;
+&#125;
+  </code></pre>
+    </div>
+
+    <ul class="list-group mb-4">
+      <li class="list-group-item">Functions placed inside the class are called <strong>methods</strong> (formerly known
+        as
+        <i>Instance Method</i>)
+      </li>
+      <li class="list-group-item">They have access to properties of object with <strong>"this"</strong></li>
+      <li class="list-group-item">They take argument / return data like any other function</li>
+    </ul>
+
+    <strong>Notes:</strong>
+    <p>Technical Methods are writing a function in object</p>
+    <p>We can call another methods from method with <strong>"this"</strong></p>
+
+    <strong>Example:</strong>
+    <div class="code bg-light border rounded p-3 mb-4">
+      <pre><code>
+class Operation &#123;
+  constructor&#40;v1, v2&#41; &#123;
+    this.a = v1;
+    this.strong = v2;
+  &#125;
+  getSumTotal&#40;&#41; &#123;
+    return this.a + this.strong;
+  &#125;
+  getDet&#40;&#41; &#123;
+    return `So for the given a = $&#123;this.a&#125; and strong = $&#123;this.strong&#125; , sum of the given property $&#123;this.getSumTotal&#40;&#41;()&#125;`;
+  &#125;
+&#125;
+
+with this
+const opt = new Operation&#40;5,10&#41;;
+opt.getDet&#40;&#41;; // So for the given a = 5 and strong = 10 , sum of the given property 15.
+
+without this // ReferenceError: getSumTotal is not defined
+  </code></pre>
+    </div>
+  </div>
+  <div *ngIf="selectedTopic === 'inheritance'">
+    <h3>Basic of Inheritance and Super</h3>
+    <p>Reuse properties and methods of an existing class when you create a new class by using <strong>extend</strong>
+      keyword</p>
+    <strong>Notes:</strong>
+    <p>Avoid Duplication , instead we can share functionality</p>
+    <div class="code bg-light border rounded p-3 mb-4">
+      <pre><code>
+class Operation&#123;
+  constructor(v1,v2)&#123;
+    this.a=v1;
+    this.strong=v2;
+  &#125;
+  getSumTotal()&#123;
+    return this.a + this.strong;
+  &#125;
+  
+  getSubtract()&#123;
+    return this.strong - this.a;
+  &#125;
+  getDet()&#123;
+    return `Hi from Operation So for the given a = $&#123;this.a&#125; and strong =$&#123;this.strong&#125; ,sum of the given property $&#123;this.getSumTotal()&#125;`;
+  &#125;
+&#125;
+// sub / Child / Derived Class  of super / parent class (Operation)
+class operation2 extends Operation&#123; 
+  getDet()&#123;
+    return `Hi from Operation2 So for the given a = $&#123;this.a&#125; and strong =$&#123;this.strong&#125; ,sum of the given property $&#123;this.getSumTotal()&#125; and subtraction of the given property is $&#123;this.getSubtract()&#125;` 
+  &#125;  
+&#125;   
+const opt2 =new operation2(5,10); // check the constructor of Parent class , bcoz child class doesn't have constructor
+opt2.getDet();
+</code></pre>
+    </div>
+  </div>
+
+  <div *ngIf="selectedSubTopic === 'super'">
+    <h3>The Super Keyword</h3>
+    <p>The super keyword is used to call the constructor of its parent class to access the parent's properties and
+      methods.</p>
+    <div class="code bg-light border rounded p-3 mb-4">
+      <pre><code>
+class Operation&#123;
+  constructor(v1,v2)&#123;
+    this.a=v1;
+    this.strong=v2;
+  &#125;
+  getSumTotal()&#123;
+    return this.a + this.strong;
+  &#125;
+
+  getSubtract()&#123;
+    return this.strong - this.a;
+  &#125;
+  getDet()&#123;
+    return `Hi from Operation So for the given a = $&#123;this.a&#125; and strong =$&#123;this.strong&#125; ,sum of the given property $&#123;this.getSumTotal()&#125;`;
+  &#125;
+&#125;
+
+class operation2 extends Operation&#123;
+  constructor(v1,v2,greet)&#123;
+    super(v1,v2);
+    this.greet =greet;
+  &#125;
+  getDet()&#123;
+    return `So, a = $&#123;this.a&#125; and strong =$&#123;this.strong&#125; ,sum of the given property $&#123;this.getSumTotal()&#125;, $&#123;this.greet&#125;` 
+  &#125;  
+&#125;   
+const opt2 =new operation2(5,10,'hello');
+opt2.getDet();
+opt2.getSumTotal();
+</code></pre>
+    </div>
+  </div>
+
+  <div *ngIf="selectedTopic === 'static'">
+    <h3>Static Property & Methods</h3>
+    <p>JS offers <strong>"Static Properties"</strong> ,where individual pieces of data are on Classes not on instance.
+      It
+      is also known as <strong>Class Attributes</strong>.</p>
+    <p>JS offers <strong>"Static Methods"</strong> ,where individual pieces of data are on Classes not on instance. It
+      is
+      also known as <strong>Class Methods</strong>.</p>
+    <strong>Notes:</strong>
+    <p>It can't be tied to any instance as a property.</p>
+    <p>In most of language static method cannot have access to its own class itself , but in JS it is called in Class
+      itself,not on object ie Instance</p>
+    <div class="code bg-light border rounded p-3 mb-4">
+      <pre><code>
+class Cat&#123;
+  constructor(name,gender)&#123;
+    this.name =name;
+    this.gender =gender;
+  &#125;
+  static sounds ='meow meow';
+
+  static getSound()&#123;
+    return 'meow meow';
+  &#125;
+&#125;
+
+const catty =new Cat('Blue','Male');
+console.log(catty); // Cat &#123; name: 'Blue', gender: 'Male' &#125;
+console.log(catty.sounds); //undefined
+console.log(Cat.sounds); // meow meow
+Cat.sounds = 'Meow';
+console.log(Cat.sounds); // Meow
+</code></pre>
+    </div>
+
+    <h3>Example of Static Method</h3>
+    <div class="code bg-light border rounded p-3 mb-4">
+      <pre><code>
+class ArrayUtils &#123;
+  constructor() &#123;
+    throw new Error('ArrayUtils cannot be instantiated.');
+  &#125;
+
+  // The average method should return the average of an array of numbers.  
+  static average(arr) &#123;
+    if (arr.length === 0) throw new Error('Array cannot be empty.');
+    return arr.reduce((sum, num) => sum + num, 0) / arr.length;
+  &#125;
+
+  // The max method should return the largest number from an array of numbers. 
+  static max(arr) &#123;
+    return Math.max(...arr);
+  &#125;
+&#125;
+</code></pre>
+    </div>
+
+  </div>
+  <div *ngIf="selectedTopic === 'GettersSetter'">
+    <h3 class="mb-3">Getters &amp; Setters</h3>
+    <p>Getters ⇒ Allow to retrieve the value of an object's property.</p>
+    <p>Setters ⇒ Allow to execute a function whenever an attempt is made to change a property's value</p>
+    <strong>Example:</strong>
+    <div class="code bg-light border rounded p-3 mb-4">
+      <pre><code>
+class UerName &#123;
+  constructor(firstName, lastName) &#123;
+    this._firstName = firstName;
+    this._lastName = lastName;
+  &#125;
+
+  get fullName() &#123;
+    return `$&#123;this._firstName&#125; $&#123;this._lastName&#125;`
+  &#125;
+
+  set newName(name) &#123;
+    const [first, last] = name.split("");
+    this._firstName = first;
+    this._lastName = last;
+  &#125;
+&#125;
+  </code></pre>
+    </div>
+  </div>
+  <div *ngIf="selectedTopic === 'classFieldsMethods'">
+    <h3 class="mb-3">Class Fields &amp; Methods</h3>
+    <p><strong>Private</strong> ⇒ Class fields/methods allow maintaining encapsulation and not allowing external access.
+    </p>
+    <p><strong>Public</strong> ⇒ Class fields/methods allow access externally and internally.</p>
+    <p><code>static num = 1;</code> is a class-level public property, while <code>#num = 1;</code> is an instance-level
+      private property.</p>
+
+    <strong>Example:</strong>
+    <div class="code bg-light border rounded p-3 mb-4">
+      <pre><code>
+class Cat &#123;
+  #name; // Private field
+  breed;
+  numberOfLegs = 4;
+
+  constructor(name, breed) &#123;
+    this.#name = name;
+    this.breed = breed;
+  &#125;
+
+  #catName() &#123;
+    return 'Privacy';
+  &#125;
+
+  get catDetails() &#123;
+    return `The Cat named as $&#123;this.#name&#125; and belong to $&#123;this.breed&#125; and it loves $&#123;this.numberOfLegs&#125; legs and it is $&#123;this.#catName&#125;`
+  &#125;
+&#125;
+
+const c = new Cat('Blue', 'Persian');
+c.#name        // ❌ cannot access private field
+c.numberOfLegs // ✅ 4
+c.#catName     // ❌ cannot access private method
+c.catDetails   // ✅ Full details with privacy
+  </code></pre>
+    </div>
+  </div>
+  <div *ngIf="selectedTopic === 'staticini'">
+    <h3 class="mb-3">Static Initialization Block</h3>
+    <p>It gets initialized once the class is called, and only once.</p>
+    <strong>Example:</strong>
+    <div class="code bg-light border rounded p-3 mb-4">
+      <pre><code>
+  class DBconnection &#123;
+    static &#123;
+      console.log('DB connected');
+    &#125;
+  &#125;
+  
+  const db = new DBconnection(); // Logs: DB connected
+  console.log(db); // DBconnection&#123;&#125; — doesn't reinitialize
+    </code></pre>
+    </div>
+  </div>
+  <div *ngIf="selectedTopic === 'exercise'">
+    <strong>Exercise</strong>
+    <div class="code bg-light border rounded p-3 mb-4">
+      <pre><code>
+class UserProfile &#123;
+  constructor(username, email, birthdate) &#123;
+    this.username = username; // Uses setter
+    this.email = email;       // Uses setter
+    this.birthdate = birthdate; // Uses setter
+  &#125;
+
+  // Getter and setter for username
+  get username() &#123;
+    return this._username;
+  &#125;
+
+  set username(value) &#123;
+    if (typeof value !== 'string' || value.trim() === '') &#123;
+      throw new Error('Invalid username.');
+    &#125;
+    this._username = value;
+  &#125;
+
+  // Getter and setter for email
+  get email() &#123;
+    return this._email;
+  &#125;
+
+  set email(value) &#123;
+    if (typeof value !== 'string' || !value.includes('&#64;')) &#123;
+      throw new Error('Invalid email.');
+    &#125;
+    this._email = value;
+  &#125;
+
+  // Getter and setter for birthdate
+  get birthdate() &#123;
+    return this._birthdate;
+  &#125;
+
+  set birthdate(value) &#123;
+    if (!this.isValidDate(value)) &#123;
+      throw new Error('Invalid birthdate.');
+    &#125;
+    this._birthdate = value;
+  &#125;
+
+  // Method to validate the date string
+  isValidDate(dateString) &#123;
+    const date = new Date(dateString);
+    return !isNaN(date.getTime()) && dateString === date.toISOString().split('T')[0];
+  &#125;
+&#125;
+
+// Example usage
+try &#123;
+  const userProfile = new UserProfile('JohnDoe', 'john&#64;example.com', '1990-01-01');
+  console.log(userProfile.username); // Output: JohnDoe
+  console.log(userProfile.email);    // Output: john&#64;example.com
+  console.log(userProfile.birthdate);// Output: 1990-01-01
+&#125; catch (error) &#123;
+  console.error(error.message);
+&#125;
+
+try &#123;
+  const invalidUserProfile = new UserProfile('', 'johnexample.com', 'not-a-date');
+&#125; catch (error) &#123;
+  console.error(error.message); // Output: Invalid username.
+&#125;
+
+// Why might you use a getter with a private field in a class?
+// Answer: To Provide Indirect access to the Private Fields.
+
+class Person &#123;
+  // Private field
+  #age;
+
+  constructor(age) &#123;
+    this.#age = age;
+  &#125;
+
+  // Getter for the private field
+  get age() &#123;
+    return this.#age;
+  &#125;
+
+  // Method to increment age
+  incrementAge() &#123;
+    this.#age++;
+  &#125;
+&#125;
+
+const person = new Person(30);
+console.log(person.age); // Output: 30
+person.incrementAge();
+console.log(person.age); // Output: 31
+
+// Role of a setter when used with private fields
+// Answer: To Validate and set the value of the private Fields.
+
+class PersonWithSetter &#123;
+  #age;
+
+  constructor(age) &#123;
+    this.#age = age;
+  &#125;
+
+  get age() &#123;
+    return this.#age;
+  &#125;
+
+  set age(value) &#123;
+    if (value < 0) &#123;
+      throw new Error("Age cannot be negative.");
+    &#125;
+    this.#age = value;
+  &#125;
+&#125;
+
+const person2 = new PersonWithSetter(30);
+console.log(person2.age); // 30
+person2.age = 35;
+console.log(person2.age); // 35
+try &#123;
+  person2.age = -5;
+&#125; catch (e) &#123;
+  console.error(e.message); // Age cannot be negative.
+&#125;
+</code></pre>
+    </div>
+  </div>
+  <div *ngIf="selectedTopic === 'this'">
+    <h3>This Keyword</h3>
+    <p><strong>this</strong> depends on the object that the method is called on</p>
+    <p><strong>Note:</strong> JavaScript calls every function on some object. If you don't explicitly do it, it calls
+      your
+      function on the <code>window</code> object (in browsers).</p>
+    <strong>Example:</strong>
+    <pre><code>
+  console.log('1991'); // is basically window.console.log('1991')
+  </code></pre>
+    <p>Global object</p>
+    <p>When you call a function on nothing, but the function comes from inside the class, the value of
+      <strong>this</strong> will be <b>undefined</b>
+    </p>
+    <p>Fortunately, we can force the value of <b>this</b> using <strong>call</strong> and <strong>bind</strong></p>
+    <b>Example:</b>
+    <pre><code>
+  window.jsjkjksj; // undefined
+  jsjkjksj.hj; // Error: Cannot read properties
+  </code></pre>
+  </div>
+  <div *ngIf="selectedTopic === 'proto'">
+    <h3>Prototype</h3>
+    <ul>
+      <li>Every single JavaScript object has a special built-in property called <strong>prototype</strong>, and that
+        prototype is itself an object which can have its own prototype, forming a <strong>prototype chain</strong>.</li>
+      <li>Prototypes are the core mechanism that allow JavaScript objects to inherit features and functionality from
+        each
+        other.</li>
+      <li>When you define a class and add methods to it, JavaScript automatically adds those methods to the prototype of
+        the class.</li>
+      <li>Every JavaScript object—whether it's an array, object literal, or instance of a class—has a special object
+        called <strong>prototype</strong>.</li>
+      <li>A prototype is an object like any other and can include methods and shared functionality that other objects
+        can
+        inherit from.</li>
+    </ul>
+    <pre><code>
+class Ope &#123;
+constructor(a, b) &#123;
+this.a = a;
+this.b = b;
+&#125;
+sum() &#123;
+return `Result of Sum is $&#123;this.a&#125; + $&#123;this.b&#125;`;
+&#125;
+&#125;
+
+const newOp = new Ope(2, 5);
+const newOp1 = new Ope(5, 6);
+
+newOp.__proto__; // Displays constructor and instance methods
+newOp.__proto__ === newOp1.__proto__; // true
+</code></pre>
+
+  </div>
+  <div *ngIf="selectedTopic === 'new'">
+    <h3>new keyword</h3>
+    <ul>
+      <li>Creates an empty object</li>
+      <li>Sets the keyword <strong>this</strong> to that object</li>
+      <li>Returns the object (i.e., returns <code>this</code>)</li>
+      <li>Creates a link to the object's prototype</li>
+    </ul>
+    <pre><code>
+Initially we define Constructor in class like:
+
+class Sum &#123;
+constructor(a, b) &#123;
+this.a = a;
+this.b = b;
+&#125;
+&#125;
+
+But you can also have a constructor function:
+
+function Sum(a, b) &#123;
+this.c = a + b;
+&#125;
+
+Sum(); // undefined
+new Sum(5, 5); // Sum &#123; c: 10 &#125;
+</code></pre>
+
+    <h3>Constructor Class vs Constructor Function</h3>
+    <p>Each class operation does not have a separate copy of its each function, i.e., all instances of the class share
+      the
+      same reference.</p>
+    <p>When using a constructor function, every time the <code>new</code> keyword is used to instantiate the object, it
+      creates its own copy of each function for each instance.</p>
+    <pre><code>
+// Constructor Function
+function Sum(a, b) &#123;
+this.a = a;
+this.b = b;
+this.sum = function () &#123;
+return `Result is $&#123;this.a&#125; + $&#123;this.b&#125;`;
+&#125;;
+&#125;
+
+const sum1 = new Sum(3, 8);
+const sum2 = new Sum(5, 5);
+sum1.sum() === sum2.sum(); // false
+
+// Constructor Class
+class Ope &#123;
+constructor(a, b) &#123;
+this.a = a;
+this.b = b;
+&#125;
+sum() &#123;
+return `Result of Sum is $&#123;this.a&#125; + $&#123;this.b&#125;`;
+&#125;
+&#125;
+
+const sum3 = new Ope(5, 8);
+const sum4 = new Ope(4, 4);
+sum3.sum() === sum4.sum(); // true
+</code></pre>
+  </div>
+  <div *ngIf="selectedTopic === 'CallApply'">
+    <h3>call, apply, and bind</h3>
+    <p>These methods are used to manipulate the value of <strong>this</strong></p>
+    <p>Both <code>call</code> and <code>apply</code> accept the value of <strong>this</strong> as their first argument
+    </p>
+    <h4>call method:</h4>
+    <strong>Example 1:</strong>
+    <pre><code>
+class Cat &#123;
+constructor(name) &#123;
+  this.name = name;
+&#125;
+dance(style = "tango") &#123;
+  return `$&#123;this.name&#125; dance style is $&#123;style&#125;`;
+&#125;
+&#125;
+
+const pet = new Cat('Molae');
+const dan = pet.dance;
+console.log(dan()); // TypeError
+console.log(dan.call(pet, "disco")); // Molae dance style is disco
+</code></pre>
+
+    <strong>Example 2:</strong>
+    <pre><code>
+const pet = &#123;
+name: 'Tyson',
+breed: 'Dog',
+det: function() &#123;
+  return `$&#123;this.name&#125; is belong to $&#123;this.breed&#125; breed`;
+&#125;
+&#125;;
+const pet2 = &#123;
+name: 'Kitty',
+breed: 'Cat'
+&#125;;
+
+pet.det(); // Tyson is belong to Dog breed
+pet.det.call(pet2); // Kitty is belong to Cat breed
+</code></pre>
+  </div>
+  <div *ngIf="selectedSubTopic === 'apply'">
+    <h3>Apply Method</h3>
+    <p>Similar to call method but arguments are passed as an array</p>
+    <strong>Example:</strong>
+    <pre><code>
+class Cat &#123;
+constructor(name) &#123;
+  this.name = name;
+&#125;
+dance(style = "tango", native = "homeland") &#123;
+  return `$&#123;this.name&#125; from $&#123;native&#125; dance style is $&#123;style&#125;`;
+&#125;
+&#125;
+
+const pet = new Cat('Molae');
+const dan = pet.dance;
+console.log(dan.apply(pet, ['kathak', 'sky']));
+console.log(dan.call(pet, "disco", 'water'));
+</code></pre>
+
+  </div>
+  <div *ngIf="selectedSubTopic === 'bind'">
+    <h3>Bind Method</h3>
+    <p>We can permanently bind a function to a specific context</p>
+    <p>It generates a new function where <strong>this</strong> is bound</p>
+    <strong>Example:</strong>
+    <pre><code>
+class Cat &#123;
+constructor(name) &#123;
+  this.name = name;
+&#125;
+dance(style = "tango", native = '') &#123;
+  return `$&#123;this.name&#125; from $&#123;native&#125; dance style is $&#123;style&#125;`;
+&#125;
+&#125;
+const pet = new Cat('Molae');
+const bindCat = pet.dance.bind(pet);
+console.log(bindCat('kathak', 'Kerala, India'));
+</code></pre>
+
+    <strong>Note:</strong>
+    <p><strong>this</strong> is created by JS when functions are called by JS directly, e.g.:</p>
+    <ul>
+      <li>Event Listener</li>
+      <li>Timers</li>
+      <li>Callback Functions (map, filter)</li>
+    </ul>
+
+    <h3>Bind with Arrow Function</h3>
+    <p><strong>Note:</strong> Arrow functions do not create a new <strong>this</strong> context.</p>
+    <p>They take the <strong>this</strong> value from the enclosing lexical context.</p>
+    <p><strong>this</strong> is a reserved keyword and gets its value only at the point of function execution.</p>
+  </div>
+
+
+
+
+</div>
+</div>

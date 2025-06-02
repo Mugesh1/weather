@@ -1,0 +1,30 @@
+<div class="weather-container">
+  <!-- Weather Effects -->
+  <app-snowfall *ngIf="effect === 'snow'" class="weather-effect"></app-snowfall>
+  <app-rain *ngIf="effect === 'rain'" class="weather-effect"></app-rain>
+  <app-sunrise *ngIf="effect === 'sunrise'" class="weather-effect"></app-sunrise>
+  <app-sunset *ngIf="effect === 'sunset'" class="weather-effect"></app-sunset>
+  <app-cloud-canvas
+    *ngIf="['cloud', 'scatteredCloud', 'brokenCloud', 'OvercastCloud'].includes(effect)"
+    [effect]="effect"
+    class="weather-effect"
+  ></app-cloud-canvas>
+  <app-heavy-rain *ngIf="effect === 'heavyrain'" class="weather-effect"></app-heavy-rain>
+
+  <!-- Main Content -->
+  <ng-container *ngIf="loading">
+    <p>Loading weather...</p>
+  </ng-container>
+
+  <ng-container *ngIf="error">
+    <p class="error">{{ error }}</p>
+  </ng-container>
+
+  <ng-container *ngIf="weatherData && !loading && !error">
+    <h2>Current Weather</h2>
+    <p><strong>Location:</strong> {{ weatherData.name }}, {{ weatherData.sys.country }}</p>
+    <p><strong>Temperature:</strong> {{ weatherData.main.temp }} °C</p>
+    <p><strong>Condition:</strong> {{ weatherData.weather[0].main }} - {{ weatherData.weather[0].description }}</p>
+    <p><strong>Effect Applied:</strong> {{ effect }}</p>
+  </ng-container>
+</div>

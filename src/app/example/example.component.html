@@ -1,0 +1,31 @@
+<div class="container my-4">
+  <h2 class="text-center mb-4">NgRx Analogies</h2>
+
+  <!-- Navigation Tabs -->
+  <ul class="nav nav-tabs mb-3" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="restaurant-tab" data-bs-toggle="tab" data-bs-target="#restaurant" type="button" role="tab">
+        Restaurant Analogy
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="bank-tab" data-bs-toggle="tab" data-bs-target="#bank" type="button" role="tab">
+        Bank Analogy
+      </button>
+    </li>
+  </ul>
+
+  <!-- Tab Content with fade animation -->
+  <div class="tab-content">
+    <div class="tab-pane fade show active" id="restaurant" role="tabpanel" aria-labelledby="restaurant-tab">
+      <div class="p-3 shadow rounded bg-light animate__animated animate__fadeIn">
+        <app-restuarant-analogy></app-restuarant-analogy>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="bank" role="tabpanel" aria-labelledby="bank-tab">
+      <div class="p-3 shadow rounded bg-light animate__animated animate__fadeIn">
+        <app-bank-analogy></app-bank-analogy>
+      </div>
+    </div>
+  </div>
+</div>

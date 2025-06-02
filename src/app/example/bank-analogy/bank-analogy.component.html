@@ -1,0 +1,56 @@
+<div class="container my-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <h4 class="card-title">Example: NgRx Store Concept — A Bank Analogy</h4>
+
+      <p>Think of the NgRx Store like a Bank.</p>
+      <p>The <strong>Store</strong> is the Bank — a central, secure place that holds your data (like the bank holds your money).</p>
+      <p>The <strong>State</strong> in the store is like the account balance — it contains your information.</p>
+      <p>Multiple customers (or parts of your application) can interact with the bank, but no one can directly take or put money into it.</p>
+      <p>Even though it's your money, you cannot directly credit or debit your account. You must follow specific procedures like:</p>
+      <ul>
+        <li>Filling a deposit form or</li>
+        <li>Submitting a withdrawal request</li>
+      </ul>
+      <p>These forms are like <strong>Actions</strong> in NgRx.</p>
+      <p>And just like the bank has a teller or a system to process your request, NgRx has a <strong>Reducer</strong> that handles the action and updates the state immutably — meaning it creates a new version of the state, rather than modifying it directly.</p>
+
+      <div class="table-responsive mt-4">
+        <table class="table table-bordered table-hover align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">Bank Concept</th>
+              <th scope="col">NgRx Equivalent</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Bank</td>
+              <td>Store</td>
+            </tr>
+            <tr>
+              <td>Account Balance</td>
+              <td>State</td>
+            </tr>
+            <tr>
+              <td>Deposit/Withdrawal Form</td>
+              <td>Action</td>
+            </tr>
+            <tr>
+              <td>Teller/Processing System</td>
+              <td>Reducer</td>
+            </tr>
+            <tr>
+              <td>Immutable Ledger</td>
+              <td>Immutable State Updates</td>
+            </tr>
+            <tr>
+              <td>Statement View</td>
+              <td>Selector</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
