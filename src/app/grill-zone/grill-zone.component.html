@@ -1,48 +1,61 @@
 <div class="code-interview-hub">
-  <h2>Code Interview Hub: JavaScript &amp; Angular Q&amp;A</h2>
-  <p><em>Select a category and difficulty to view questions. Click a question to expand/collapse its answer.</em></p>
+  <h2>Code Interview Hub: JavaScript & Angular Q&amp;A</h2>
+  <p>
+    <em>
+      Select a category and difficulty to view questions.
+      Click a question to expand/collapse its answer.
+    </em>
+  </p>
 
-  <!-- ================================
-       CATEGORY TABS (Row #1)
-       ================================ -->
+  <!-- Category Tabs -->
   <div class="tabs category-tabs">
-    <button *ngFor="let cat of categorizedList"
-            (click)="selectCategory(cat.category)"
-            [class.active]="cat.category === selectedCategory">
+    <button
+      *ngFor="let cat of categorizedList"
+      (click)="selectCategory(cat.category)"
+      [class.active]="cat.category === selectedCategory"
+    >
       {{ cat.category }}
     </button>
   </div>
 
-  <!-- ================================
-       DIFFICULTY TABS (Row #2)
-       Only shown if there’s a selectedCategoryGroup
-       ================================ -->
-       <div class="difficulty-radios" *ngIf="selectedCategoryGroup">
-        <label *ngFor="let grp of selectedCategoryGroup.groups" class="radio-label">
-          <input type="radio"
-                 name="difficulty"
-                 [value]="grp.difficulty"
-                 [(ngModel)]="selectedDifficulty"
-                 (change)="selectDifficulty(grp.difficulty)" />
-          {{ grp.difficulty }}
-        </label>
-      </div>
-      
+  <!-- Difficulty Radios -->
+  <div class="difficulty-radios" *ngIf="selectedCategoryGroup">
+    <label
+      *ngFor="let grp of selectedCategoryGroup.groups"
+      class="radio-label"
+    >
+      <input
+        type="radio"
+        name="difficulty"
+        [value]="grp.difficulty"
+        [(ngModel)]="selectedDifficulty"
+        (change)="selectDifficulty(grp.difficulty)"
+      />
+      {{ grp.difficulty }}
+    </label>
+  </div>
 
-  <!-- ================================
-       QUESTION LIST
-       Only shown if there’s a selectedDifficultyGroup
-       ================================ -->
+  <!-- Question List -->
   <div class="question-list" *ngIf="selectedDifficultyGroup">
     <div class="qa-item" *ngFor="let item of selectedDifficultyGroup.items">
+      
+      <!-- Question Header -->
       <div class="question" (click)="toggle(item)">
-        <span class="id">Q{{ item.id }}.</span>
+        <span class="idGRILL">Q:</span>
         <span class="text">{{ item.question }}</span>
-        <span class="toggle-indicator">{{ item.expanded ? '▾' : '▸' }}</span>
+        <span class="toggle-indicator">
+          {{ item.expanded ? '▾' : '▸' }}
+        </span>
       </div>
+
+      <!-- Markdown Answer -->
       <div class="answer" *ngIf="item.expanded">
-        <pre>{{ item.answer }}</pre>
+        <div
+          class="markdown-container"
+          [innerHTML]="item.answer ? (item.answer | markdown | async) : ''"
+        ></div>
       </div>
+      
     </div>
   </div>
 </div>

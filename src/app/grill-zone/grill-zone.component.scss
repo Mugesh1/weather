@@ -1,19 +1,12 @@
 .code-interview-hub {
   max-height: 600px;
-  /* Set your desired max height */
-  z-index: 10000000;
   overflow-y: auto;
-  /* Enables vertical scrolling */
   overflow-x: hidden;
-  /* Optional: prevents horizontal scroll */
-  padding: 5rem;
-  /* Optional: space for scrollbar */
-  border: 1px solid #ccc;
-  /* Optional: to visually separate the scroll area */
-  background-color: transparent;
-  /* Optional: to match styling */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
+  padding: 2rem;
+  border: 1px solid #e0e0e0;
+  // background-color: #fafafa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: relative;
 
   h2 {
     text-align: center;
@@ -23,14 +16,11 @@
 
   p {
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     font-style: italic;
     color: #555;
   }
 
-  /* ------------------------------------
-     Category Tabs (Row #1)
-     ------------------------------------ */
   .category-tabs {
     display: flex;
     gap: 0.5rem;
@@ -45,7 +35,8 @@
       cursor: pointer;
       font-size: 1rem;
       font-weight: 500;
-      transition: background-color 0.15s ease;
+      color: #003366;
+      transition: background-color 0.15s ease, color 0.15s ease;
 
       &:hover {
         background-color: #cce6ff;
@@ -61,56 +52,33 @@
   .difficulty-radios {
     display: flex;
     gap: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .radio-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 500;
     cursor: pointer;
-  }
-
-  input[type="radio"]:checked+span {
-    font-weight: bold;
-  }
-
-  /* ------------------------------------
-     Difficulty Tabs (Row #2)
-     ------------------------------------ */
-  .difficulty-tabs {
-    display: flex;
-    gap: 0.5rem;
     justify-content: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
 
-    button {
-      background-color: #f0f8ff;
-      border: none;
-      padding: 0.4rem 0.8rem;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 0.95rem;
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       font-weight: 500;
-      transition: background-color 0.15s ease;
+      cursor: pointer;
+      color: #003366;
 
-      &:hover {
-        background-color: #d9ecff;
+      input[type='radio'] {
+        accent-color: #007acc;
+        width: 1rem;
+        height: 1rem;
       }
 
-      &.active {
-        background-color: #1e40af;
-        color: white;
+      input[type='radio']:checked+span {
+        font-weight: bold;
+        color: #00509e;
       }
     }
   }
 
-  /* ------------------------------------
-     Question List
-     ------------------------------------ */
   .question-list {
-    margin: 1rem 0;
+    margin: 0.5rem 0;
 
     .qa-item {
       margin: 0.75rem 0;
@@ -124,16 +92,17 @@
         justify-content: space-between;
         align-items: center;
         padding: 0.4rem 1rem;
-        font-weight: 500;
-        background-color: #f0f8ff;
+        background-color: #e6f2ff;
         cursor: pointer;
         transition: background-color 0.15s ease;
+        border-bottom: 1px solid #cbd5e1;
 
         &:hover {
-          background-color: #d9ecff;
+          background-color: #d0e6ff;
         }
 
-        .id {
+        .idGRILL {
+          font-weight: bold;
           margin-right: 0.5rem;
           color: #0f172a;
         }
@@ -141,6 +110,7 @@
         .text {
           flex: 1;
           color: #0f172a;
+          word-break: break-word;
         }
 
         .toggle-indicator {
@@ -151,31 +121,82 @@
       }
 
       .answer {
-        background-color: #fafafa;
-        padding: 0.9rem 1.25rem;
+        background-color: #f8f9fa;
+        // padding: 0.75rem 1rem;
         border-top: 1px solid #ddd;
+        font-family: 'Consolas', 'Courier New', monospace;
+        font-size: 0.95rem;
+        white-space: pre-wrap;
+        line-height: 1.4;
+        color: #1f2937;
+        padding: 1rem 1.25rem;
+        overflow-wrap: break-word;
 
-        pre {
-          margin: 0;
-          white-space: pre-wrap;
-          font-size: 0.95rem;
-          line-height: 1.4;
-          color: #1f2937;
+
+        code {
+          display: block;
+          margin-left: 1rem;
         }
+
+        // .markdown-container {
+        //   pre, code {
+        //     font-family: 'Fira Code', 'Consolas', monospace;
+        //     font-size: 0.85rem;
+        //     border-radius: 6px;
+        //     overflow-x: auto;
+        //     white-space: pre-wrap;
+        //     word-break: break-word;
+        //   }
+        
+        //   pre {
+        //     background: #2d2d2d;
+        //     color: #ccc;
+        //     padding: 1rem;
+        //     margin: 1rem 0;
+        //   }
+        
+        //   code {
+        //     background: #f5f5f5;
+        //     color: #c7254e;
+        //     padding: 0.2rem 0.4rem;
+        //   }
+        
+        //   pre code {
+        //     background: none;
+        //     padding: 0;
+        //     color: inherit;
+        //   }
+        // }
+        
+        .markdown-container pre {
+          background-color: #f5f5f5;
+          padding: 1rem;
+          border-radius: 5px;
+          overflow-x: auto;
+          white-space: nowrap;
+        }
+        
+        .markdown-container code {
+          font-family: 'Courier New', Courier, monospace;
+          font-size: 0.4rem;
+          white-space: nowrap;
+        }
+        
+
       }
     }
   }
-}
 
-.code-interview-hub::-webkit-scrollbar {
-  width: 8px;
-}
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
 
-.code-interview-hub::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.2);
-  border-radius: 4px;
-}
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+  }
 
-.code-interview-hub::-webkit-scrollbar-track {
-  background: transparent;
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
 }

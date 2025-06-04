@@ -16,12 +16,8 @@ export class AppComponent implements OnDestroy {
 
   ngAfterViewInit() {
     hljs.highlightAll();
-
-    // Delay initial API call by 2 seconds
     setTimeout(() => {
       this.fetchWeatherEffect(); // Initial call
-
-      // Start interval every 20 seconds
       this.intervalId = setInterval(() => {
         this.fetchWeatherEffect();
       }, 20000);
@@ -50,7 +46,6 @@ export class AppComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    // Clear interval when component is destroyed
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }

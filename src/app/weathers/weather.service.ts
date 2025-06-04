@@ -66,7 +66,7 @@ export class WeatherService {
         // Clouds
         if (weatherMain === 'clouds') {
           if (weatherDesc.includes('overcast')) return 'OvercastCloud';
-          if (weatherDesc.includes('scattered')) return 'OvercastCloud';
+          if (weatherDesc.includes('scattered')) return 'scatteredCloud';
           if (weatherDesc.includes('broken')) return 'brokenCloud';
           return 'cloud';
         }
@@ -75,7 +75,7 @@ export class WeatherService {
       }),
       catchError((err): Observable<WeatherEffect> => {
         console.error('Weather API error:', err);
-        return of('day' as WeatherEffect); // ✅ Cast explicitly
+        return of('OvercastCloud' as WeatherEffect); // ✅ Cast explicitly
       })
     );
   }

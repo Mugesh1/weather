@@ -1,3 +1,5 @@
+@import "~prismjs/themes/prism-tomorrow.css";
+
 /* GLOBAL RESET AND DEFAULTS */
 html,
 body,
@@ -52,11 +54,12 @@ body.heavyrain {
   background: linear-gradient(to top, #2c3e50, #000000);
   color: #dcdcdc;
 }
+
 /* NEW WEATHER EFFECTS */
 
 /* Mist */
 body.mist {
-  background:linear-gradient(to top, #858585, #17cbdd);
+  background: linear-gradient(to top, #858585, #17cbdd);
   color: #555;
 }
 
@@ -102,7 +105,7 @@ body.OvercastCloud {
     border: 1px solid #999;
   }
 
-  .doc-style pre > code {
+  .doc-style pre>code {
     background-color: #f0f1f2;
     color: #222;
     border: 1px solid #aaa;
@@ -234,21 +237,56 @@ body.heavyrain *:not(pre):not(code):not(button) {
 
 body.rain button,
 body.heavyrain button {
-  color: #000; 
-  background-color: #fff; 
+  color: #000;
+  background-color: #fff;
   border: 1px solid #000;
 }
 
-body.rain .doc-style pre > code,
-body.heavyrain .doc-style pre > code {
+body.rain .list-group-item,
+body.heavyrain .list-group-item {
+  background: transparent;
+}
+
+body.rain .toc-container,
+body.heavyrain .toc-container {
+  background: none !important;
+}
+
+body.rain .card,
+body.heavyrain .card {
+  color: #000000 !important;
+}
+
+body.rain .doc-style pre>code,
+body.heavyrain .doc-style pre>code {
   color: #000000 !important;
 }
 
 body.rain button,
 body.heavyrain button {
   color: #000 !important;
-  background-color: #f0f0f0;
+  // background-color: #f0f0f0;
   border: 1px solid #333;
+}
+
+body.rain .idGRILL,
+body.heavyrain .idGRILL {
+  color: #000 !important;
+}
+
+body.rain .nav-link.active,
+body.heavyrain .nav-link.active {
+  background: linear-gradient(to right, #66bfff, #3399ff);
+  box-shadow: 0 0 12px rgba(102, 191, 255, 0.4);
+}
+
+body.rain .nav-link.active,
+body.heavyrain .nav-link.active {
+  background: linear-gradient(to right, #003366, #001933);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-weight: bold;
+  border-bottom: 3px solid #00bfff;
 }
 
 .weather-effect {
@@ -258,5 +296,5 @@ body.heavyrain button {
   width: 100%;
   height: 100%;
   z-index: -10 !important;
-  pointer-events: none; // makes it non-interactive
+  pointer-events: none; 
 }

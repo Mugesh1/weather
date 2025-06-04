@@ -17,7 +17,10 @@ import { HighlightDirective } from './directives/highlightJS';
 import { BankAnalogyComponent } from './example/bank-analogy/bank-analogy.component';
 import { ExampleComponent } from './example/example.component';
 import { RestuarantAnalogyComponent } from './example/restuarant-analogy/restuarant-analogy.component';
+import { GrillZoneComponent } from './grill-zone/grill-zone.component';
 import { GuidelineComponent } from './guideline/guideline.component';
+import { JSComponent } from './js/js.component';
+import { MarkdownPipe } from './pipe/markdown.pipe';
 import { metaReducers, reducers } from './reducers';
 import { CloudCanvasComponent } from './weathers/cloud-canvas/cloud-canvas.component';
 import { HeavyRainComponent } from './weathers/heavy-rain/heavy-rain.component';
@@ -25,13 +28,11 @@ import { RainComponent } from './weathers/rain/rain.component';
 import { SnowfallComponent } from './weathers/snowfall/snowfall.component';
 import { SunriseComponent } from './weathers/sunrise/sunrise.component';
 import { SunsetComponent } from './weathers/sunset/sunset.component';
-import { JSComponent } from './js/js.component';
 import { WeatherComponent } from './weathers/weather.component';
 import { WindEffectComponent } from './weathers/wind-effect/wind-effect.component';
-import { GrillZoneComponent } from './grill-zone/grill-zone.component';
 
 @NgModule({
-  declarations: [AppComponent, HighlightDirective, CustomerViewComponent, CustomerAddComponent, BankAnalogyComponent, RestuarantAnalogyComponent, SnowfallComponent, RainComponent, SunriseComponent, SunsetComponent, CloudCanvasComponent, HeavyRainComponent, ExampleComponent, GuidelineComponent,
+  declarations: [AppComponent, HighlightDirective,MarkdownPipe, CustomerViewComponent, CustomerAddComponent, BankAnalogyComponent, RestuarantAnalogyComponent, SnowfallComponent, RainComponent, SunriseComponent, SunsetComponent, CloudCanvasComponent, HeavyRainComponent, ExampleComponent, GuidelineComponent,
     WorkspaceComponent,
     JSComponent,
     WeatherComponent,

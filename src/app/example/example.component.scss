@@ -1,23 +1,20 @@
-.hub{
-  max-height: 600px; /* Set your desired max height */
+.hub {
+  max-height: 600px;
   z-index: 10000000;
-  overflow-y: auto;  /* Enables vertical scrolling */
-  overflow-x: hidden; /* Optional: prevents horizontal scroll */
-  padding: 5rem; /* Optional: space for scrollbar */
-  border: 1px solid #ccc; /* Optional: to visually separate the scroll area */
-  background-color:transparent; /* Optional: to match styling */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 5rem;
+  border: 1px solid #ccc;
+  background-color: transparent;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
 }
-
-
 
 .hub::-webkit-scrollbar {
   width: 8px;
 }
 
 .hub::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }
 
