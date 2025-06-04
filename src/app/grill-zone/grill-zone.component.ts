@@ -1,10 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 interface QAItem {
   id: number;
   question: string;
   answer?: string;
   expanded?: boolean;
+  category: 'JavaScript' | 'Angular' | 'TypeScript' | 'HTML/CSS';
+  difficulty: 'Beginner'| 'Intermediate' | 'Advanced';
+}
+
+interface DifficultyGroup {
+  difficulty: 'Intermediate' | 'Advanced';
+  items: QAItem[];
+}
+
+interface CategoryGroup {
+  category: 'JavaScript' | 'Angular' | 'TypeScript' | 'HTML/CSS';
+  groups: DifficultyGroup[];
 }
 
 @Component({
@@ -12,16 +24,21 @@ interface QAItem {
   templateUrl: './grill-zone.component.html',
   styleUrls: ['./grill-zone.component.scss']
 })
-export class GrillZoneComponent {
-  toggle(item: QAItem) {
-    item.expanded = !item.expanded;
-  }
+export class GrillZoneComponent implements OnInit {
+  // --- State for which category/difficulty is currently selected
+  selectedCategory: 'JavaScript' | 'Angular' | 'TypeScript' | 'HTML/CSS';
+  selectedDifficulty: 'Intermediate' | 'Advanced';
 
-  // The full list of questions (with answers if provided)
-  qaList: QAItem[] = [
+  // The final nested list: one CategoryGroup per category, each containing 1–2 difficulty groups
+  categorizedList: CategoryGroup[] = [];
+
+  // --- “Flat” source list of all questions, with category & difficulty tags
+  private flatList: QAItem[] = [
     {
       id: 1,
-      question: 'let vs var vs const',
+      category: 'JavaScript',
+      difficulty: 'Intermediate',
+      question: 'Differentiate let vs var vs const ?',
       answer: `
 - **var**: Function-scoped (or global-scoped if outside a function). Can be re-assigned and re-declared. Hoisted (initialized as undefined).
 - **let**: Block-scoped. Can be re-assigned but not re-declared in the same scope. Hoisted but not initialized (temporal dead zone until declaration).
@@ -30,7 +47,9 @@ export class GrillZoneComponent {
     },
     {
       id: 2,
-      question: 'NgModule Decorator',
+      category: 'Angular',
+      difficulty: 'Intermediate',
+      question: 'what is NgModule Decorator ?',
       answer: `
 - The \`@NgModule\` decorator defines an Angular module. It has metadata properties like:
   - \`declarations\`: components, directives, pipes owned by this module.
@@ -41,14 +60,18 @@ export class GrillZoneComponent {
     },
     {
       id: 3,
-      question: 'Can we have multiple NgModule?',
+      category: 'Angular',
+      difficulty: 'Intermediate',
+      question: 'Can we have multiple NgModule ?',
       answer: `
 - Yes, an Angular application is built from many \`@NgModule\` classes. Each feature or lazy-loaded area is its own NgModule.
       `.trim()
     },
     {
       id: 4,
-      question: `Lazy Loading vs Eager Loading vs Preload loading `,
+      category: 'Angular',
+      difficulty: 'Advanced',
+      question: 'Differentiate Lazy Loading vs Eager Loading vs Preload loading ?',
       answer: `
 - **Eager Loading**: Imports all feature modules up front. Every module is bundled and downloaded when the app starts.
 - **Lazy Loading**: Defers loading of a feature module until the user navigates to a route that requires it. Reduces initial bundle size.
@@ -57,7 +80,9 @@ export class GrillZoneComponent {
     },
     {
       id: 5,
-      question: 'navigateByUrl vs navigate ',
+      category: 'Angular',
+      difficulty: 'Intermediate',
+      question: 'Differentiate navigateByUrl vs navigate ?',
       answer: `
 - \`router.navigateByUrl('/path')\`: You pass a URL string directly.
 - \`router.navigate(['/path', param1, param2])\`: You pass an array of path segments (and optional parameters). Angular builds the URL for you.
@@ -65,589 +90,870 @@ export class GrillZoneComponent {
     },
     {
       id: 6,
-      question: `QueryParams ?`,
+      category: 'Angular',
+      difficulty: 'Advanced',
+      question: 'Observables: Cold vs. Hot?',
       answer: `
-- **queryParams**: Appends key/value pairs to the URL after a question mark (e.g., \`/list?page=2&sort=asc\`). These survive a page refresh and can be read via \`ActivatedRoute.queryParams\`:
-  constructor(private route: ActivatedRoute) { }
-  ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      console.log(params); 
-    });
-  }`.trim()
+    - **Cold Observable**: Starts emitting values only when someone subscribes. Each subscriber gets its own independent execution.
+      Example: HTTP requests.
+    - **Hot Observable**: Emits values even without subscribers. All subscribers share the same execution.
+      Example: Mouse events or WebSocket streams.
+    - Think: Cold = unicast, Hot = multicast.
+      `.trim()
     },
     {
       id: 7,
-      question: `state => Used to pass sensitive data so it can't be exposed in URL; it is accessed using ActivatedRoute snapshot.`,
+      category: 'Angular',
+      difficulty: 'Advanced',
+      question: 'Explain share and replay operators, and the role of Scheduler?',
       answer: `
-    - **State**: You can pass an object when navigating so data isn’t visible in the URL:
-    
-    \`\`\`ts
-    this.router.navigate(['/detail'], { state: { secretInfo: 123 } });
-    \`\`\`
-    
-    Then in the destination component:
-    
-    \`\`\`ts
-    constructor(private route: ActivatedRoute, private router: Router) {
-      const stateData = this.router.getCurrentNavigation()?.extras.state;
-      console.log(stateData); // { secretInfo: 123 }
-    }
-    \`\`\`
-    `.trim()
+    - **share()**: Multicasts the source Observable. All subscribers share the same execution. Avoids re-execution of side-effects.
+    - **shareReplay(n)**: Same as share but also replays the last 'n' emissions to new subscribers.
+    - **Scheduler**: Controls when a subscription starts and how notifications are delivered (e.g., async, queue, animationFrame). It’s a mechanism in RxJS to control timing.
+      `.trim()
     },
     {
       id: 8,
-      question: `JavaScript (Beginner): What is the difference between var, let, and const?`,
+      category: 'Angular',
+      difficulty: 'Advanced',
+      question: 'In Angular, do we need to unsubscribe from every Observable?',
       answer: `
-    - **var**: Function-scoped or global-scoped if declared outside a function. Can be re-declared and re-assigned. Hoisted (initialized as undefined).
-    - **let**: Block-scoped. Can be re-assigned but not re-declared in the same scope. Hoisted but uninitialized until its declaration (temporal dead zone).
-    - **const**: Block-scoped. Must be initialized at declaration and cannot be re-assigned or re-declared. Hoisted but remains uninitialized in the temporal dead zone until its declaration.
-    
-    Example:
-    \`\`\`js
-    // var
-    console.log(a); // undefined (hoisted)
-    var a = 5;
-    a = 10;        // OK
-    var a = 20;   // OK
-    
-    // let
-    // console.log(b); // ReferenceError (temporal dead zone)
-    let b = 5;
-    b = 10;        // OK
-    // let b = 20;  // SyntaxError (cannot re-declare in same scope)
-    
-    // const
-    // console.log(c); // ReferenceError (temporal dead zone)
-    const c = 5;
-    // c = 10;      // TypeError (cannot re-assign)
-    // const c = 20;// SyntaxError (cannot re-declare)
-    \`\`\`
-        `.trim()
+    - **Not always**. You only need to unsubscribe manually when:
+      - The Observable is infinite (e.g., interval, subject).
+      - It doesn’t complete on its own.
+    - **Don’t need to unsubscribe** if:
+      - You're using 'HttpClient' (completes after one emission).
+      - The Observable is tied to Angular lifecycle (e.g., async pipe, 'takeUntil', 'take(1)').
+      `.trim()
     },
     {
       id: 9,
-      question: `TypeScript (Beginner): What is an interface in TypeScript, and how does it differ from a type alias?`,
+      category: 'Angular',
+      difficulty: 'Advanced',
+      question: 'Angular HTTPClient: Benefits over fetch and XMLHttpRequest?',
       answer: `
-    - **Interface**: Defines a contract for the shape of an object (properties and method signatures). Can be implemented by classes or extended by other interfaces.
-    - **Type Alias**: Creates a new name for any type (primitive, union, intersection, tuple, etc.). More flexible than interfaces but cannot be reopened/merged.
-    
-    Example (interface):
-    \`\`\`ts
-    interface User {
-      id: number;
-      name: string;
-      isActive?: boolean; // optional property
-    }
-    
-    class Customer implements User {
-      constructor(public id: number, public name: string, public isActive = true) {}
-    }
-    \`\`\`
-    
-    Example (type alias):
-    \`\`\`ts
-    type StringOrNumber = string | number;
-    type Point = { x: number; y: number };
-    
-    function logId(id: StringOrNumber) {
-      console.log(id);
-    }
-    \`\`\`
-    
-    Differences:
-    - Interfaces can be merged (declaration merging), type aliases cannot.
-    - Type aliases can represent union/intersection types; interfaces cannot directly do unions.
-        `.trim()
+    - Built-in support for **observables** (stream-based).
+    - Handles **request/response transformation**, like JSON parsing.
+    - Easy to apply **interceptors**, **retry**, and **error handling**.
+    - Built-in with Angular DI and lifecycle integration.
+    - Provides a clean and declarative API vs. fetch’s imperative style.
+      `.trim()
     },
     {
       id: 10,
-      question: `Angular (Beginner): What is a Component in Angular and how do you create one?`,
+      category: 'Angular',
+      difficulty: 'Advanced',
+      question: 'Multiple Interceptors: How do they work?',
       answer: `
-    - An **Angular Component** is a class decorated with \`@Component\` that controls a region of the UI (its view). It consists of:
-      1. **Selector**: Custom HTML tag name.
-      2. **Template**: Inline HTML or external \`.html\` file.
-      3. **Styles**: Inline CSS or external \`.css/ .scss\` file.
-      4. **Class**: Contains data and logic.
-    
-    To generate a component using the Angular CLI:
-    \`\`\`bash
-    ng generate component my-sample-component
-    # or shorthand
-    ng g c my-sample-component
-    \`\`\`
-    
-    This creates:
-    \`\`\`
-    src/app/my-sample-component/
-      my-sample-component.component.ts
-      my-sample-component.component.html
-      my-sample-component.component.scss
-      my-sample-component.component.spec.ts
-    \`\`\`
-    
-    Example of a simple component:
-    \`\`\`ts
-    import { Component } from '@angular/core';
-    
-    @Component({
-      selector: 'app-greeting',
-      template: \`
-        <h1>Hello, {{ name }}!</h1>
-      \`,
-      styles: [\`
-        h1 { color: teal; }
-      \`]
-    })
-    export class GreetingComponent {
-      name: string = 'Angular';
-    }
-    \`\`\`
-        `.trim()
+    - Angular supports **multiple interceptors**.
+    - They work in a **chain-like fashion** (like middleware).
+      - Request goes through interceptors in the order they are **provided**.
+      - Response is processed in the **reverse order**.
+    - Useful for separating concerns like auth, logging, and error handling.
+      `.trim()
     },
     {
       id: 11,
-      question: `JavaScript (Intermediate): Explain closures and give a real-world use case.`,
+      category: 'Angular',
+      difficulty: 'Advanced',
+      question: 'What techniques are used to optimize performance in Angular?',
       answer: `
-    A **closure** is a function that retains access to its lexical scope (outer variables) even after the outer function has returned. Closures are useful for:
-    1. **Data privacy**: Encapsulating variables that cannot be accessed from outside.
-    2. **Partial application / currying**: Pre-loading arguments.
-    
-    Example (data privacy):
-    \`\`\`js
-    function counterFactory() {
-      let count = 0;
-      return {
-        increment() {
-          count++;
-          console.log(count);
-        },
-        reset() {
-          count = 0;
-          console.log('Reset to', count);
-        }
-      };
-    }
-    
-    const counter = counterFactory();
-    counter.increment(); // 1
-    counter.increment(); // 2
-    // console.log(counter.count); // undefined (count is private)
-    counter.reset();     // Reset to 0
-    \`\`\`
-    
-    Here, \`increment\` and \`reset\` form closures over the \`count\` variable. The only way to change \`count\` is via those methods.
-        `.trim()
+    - **Change Detection Strategies** (e.g., OnPush).
+    - **Lazy Loading Modules**.
+    - **TrackBy** with *ngFor.
+    - **Memoization** and **Pure Pipes**.
+    - **Detach zones** where possible ('NgZone').
+    - **Preloading Strategy** for background loading.
+    - **Tree Shaking** & **AOT Compilation**.
+    - Use of **Standalone Components** (from Angular v14+).
+      `.trim()
     },
     {
       id: 12,
-      question: `TypeScript (Intermediate): What are Generics and how do you use them in functions and classes?`,
+      category: 'Angular',
+      difficulty: 'Intermediate',
+      question: 'Why do we use * in structural directives like *ngIf or *ngFor?',
       answer: `
-    **Generics** allow you to write reusable code that works with a variety of types, preserving type safety. Use angle brackets \`<T>\` to define a generic type placeholder.
-    
-    Example (generic function):
-    \`\`\`ts
-    function identity<T>(arg: T): T {
-      return arg;
-    }
-    
-    // Usage:
-    const str = identity<string>('hello'); // inferred: T = string
-    const num = identity(123);             // inferred: T = number
-    \`\`\`
-    
-    Example (generic interface):
-    \`\`\`ts
-    interface ApiResponse<T> {
-      data: T;
-      status: number;
-      error?: string;
-    }
-    
-    const userResponse: ApiResponse<{ id: number; name: string }> = {
-      data: { id: 1, name: 'Alice' },
-      status: 200
-    };
-    \`\`\`
-    
-    Example (generic class):
-    \`\`\`ts
-    class Stack<T> {
-      private items: T[] = [];
-    
-      push(item: T) {
-        this.items.push(item);
-      }
-    
-      pop(): T | undefined {
-        return this.items.pop();
-      }
-    }
-    
-    const numberStack = new Stack<number>();
-    numberStack.push(10);
-    numberStack.push(20);
-    console.log(numberStack.pop()); // 20
-    \`\`\`
-        `.trim()
+    - The \`*\` is shorthand for Angular's **template syntax**.
+    - It tells Angular: "Transform this into an embedded template".
+      - Example: \`*ngIf="show"\` becomes:
+        \`<ng-template [ngIf]="show">...</ng-template>\`
+    - It's mainly used with **structural directives** that change the DOM layout (e.g., \`*ngIf\`, \`*ngFor\`, \`*ngSwitch\`).
+    - You can also write without \`*\` using the long-form \`<ng-template>\` if needed.
+      `.trim()
     },
     {
       id: 13,
-      question: `Angular (Intermediate): How does Angular’s Dependency Injection (DI) system work?`,
+      category: 'Angular',
+      difficulty: 'Intermediate',
+      question: 'Why do Angular docs sometimes refer to components as directives?',
       answer: `
-    Angular’s **Dependency Injection** (DI) is a design pattern that supplies a class (component, service, directive) with its dependencies rather than having the class create them itself. Key points:
-    1. **Providers**: Define how to create a dependency (registering a service under \`@Injectable({ providedIn: 'root' })\` or in an \`NgModule\`/component’s \`providers\` array).
-    2. **Injector Hierarchy**: 
-       - **Root Injector** (\`providedIn: 'root'\`): Singleton for the entire application.
-       - **Module Injector**: For each lazy-loaded NgModule.
-       - **Component Injector**: If you provide a service in a component’s \`providers\`, that component and its children get a separate instance.
-    3. **Injection Tokens**: Use \`@Inject\` or custom \`InjectionToken\` when you need to inject non-class values.
-    4. **Constructor Injection**: Angular inspects the constructor parameters’ types or tokens and resolves dependencies automatically.
-    
-    Example:
-    \`\`\`ts
-    @Injectable({
-      providedIn: 'root'
-    })
-    export class ApiService {
-      constructor(private http: HttpClient) {}
-    }
-    
-    @Component({
-      selector: 'app-data',
-      template: '<p>Data loaded</p>'
-    })
-    export class DataComponent {
-      constructor(private api: ApiService) {
-        this.api.getData().subscribe(...);
-      }
-    }
-    \`\`\`
-    
-    Here, \`ApiService\` is provided in the root injector. When Angular creates \`DataComponent\`, it sees the constructor requires \`ApiService\` and fetches the singleton from the injector.
-        `.trim()
+    - Technically, an Angular **component is a special type of directive** that has a **template**.
+    - All components are directives, but not all directives are components.
+      - **Component** = Directive + View (template).
+      - **Directive** = No template, just behavior.
+    - That's why you'll see Angular documentation sometimes say:
+      "Components are directives with templates."
+    - Example:
+      - \`@Component({ ... })\` is built on top of \`@Directive()\`.
+      `.trim()
     },
     {
       id: 14,
-      question: `JavaScript (Advanced): Explain the event loop, call stack, and microtask queue in detail.`,
+      category: 'JavaScript',
+      difficulty: 'Intermediate',
+      question: 'Constructor? Why avoid business logic in constructor?',
       answer: `
-    JavaScript runtime uses a **call stack** and an **event loop** to manage execution. In the browser (or Node.js), there’s also a **task queue** (macrotasks) and a **microtask queue**.
+        - A **constructor** is a special method used to initialize a class's instance when it is created.
+        - It is meant for **setting up basic object state**, like initializing properties or injecting dependencies.
+        - **Avoid putting business logic** (e.g., API calls, complex computations, side-effects) in constructors because:
+          - It makes the class **harder to test** and maintain.
+          - Constructors should be **fast and predictable** — heavy logic can cause performance issues or errors during instantiation.
+          - It breaks the **Single Responsibility Principle** — constructors should only construct.
+          - In frameworks like Angular, lifecycle methods like \`ngOnInit()\` are the right place for such logic.
+        - Example:
+          \`\`\`ts
+          constructor(private http: HttpClient) {
+            // ❌ Avoid: making API calls here
+          }
     
-    1. **Call Stack**: A last-in-first-out (LIFO) stack where function calls are pushed and popped. When a function is invoked, a new frame is pushed; when it returns, the frame is popped.
-    
-    2. **Event Loop**: Continuously checks the call stack and the task queues:
-       - If the call stack is empty, it looks at the microtask queue and runs all microtasks (in FIFO order).
-       - After microtasks are drained, it picks the next task (macrotask) from the task queue and pushes it to the call stack.
-       - **Macrotask examples**: \`setTimeout\`, \`setInterval\`, DOM events, I/O callbacks.
-       - **Microtask examples**: Promises (\`.then/catch/finally\`), \`queueMicrotask\`, \`MutationObserver\`.
-    
-    3. **Execution Order**:
-       - Synchronous code runs first (pushed onto the call stack).
-       - When a promise resolves, its \`.then\` callback is placed into the microtask queue.
-       - Once the current call stack completes, the event loop processes the microtask queue entirely before handling the next macrotask.
-    
-    Example:
-    \`\`\`js
-    console.log('Start');
-    
-    setTimeout(() => {
-      console.log('setTimeout callback');
-    }, 0);
-    
-    Promise.resolve().then(() => {
-      console.log('Promise.then callback');
-    });
-    
-    console.log('End');
-    \`\`\`
-    
-    **Expected output**:
-    \`\`\`
-    Start
-    End
-    Promise.then callback
-    setTimeout callback
-    \`\`\`
-    Explanation:
-    - \`Start\` and \`End\` are logged synchronously.
-    - The resolved promise’s \`.then\` is queued as a microtask.
-    - \`setTimeout\` callback is queued as a macrotask.
-    - After the call stack is empty, the microtask (\`Promise.then callback\`) runs before the macrotask (\`setTimeout callback\`).
-        `.trim()
+          ngOnInit() {
+            // ✅ Do business logic like API calls here
+            this.http.get('/api/data').subscribe(...);
+          }
+          \`\`\`
+      `.trim()
     },
     {
       id: 15,
-      question: `TypeScript (Advanced): Explain decorators, their use cases, and how you’d implement a class/method decorator.`,
+      category: 'Angular',
+      difficulty: 'Advanced',
+      question: 'What is NgZone, Change Detection Strategy, and detectChanges() in Angular?',
       answer: `
-    **Decorators** are a TypeScript feature (stage 2 ECMAScript proposal) that allow you to attach metadata or modify classes, methods, properties, or parameters at design time. Angular uses decorators extensively (\`@Component\`, \`@Injectable\`, \`@NgModule\`, etc.).
+        - **NgZone**:
+          - A service in Angular that helps detect **when to trigger change detection**.
+          - It monkey-patches async operations (e.g., setTimeout, promises) to run change detection automatically when they complete.
+          - Helps Angular apps stay reactive without manual intervention.
+          - Can be used to **optimize performance** by running code *outside Angular's zone* to avoid unnecessary change detection.
     
-    1. **Class Decorator**: A function that takes a constructor and can return a new constructor or modify the existing one.
-    2. **Method Decorator**: A function that receives the target prototype, method name, and descriptor; can wrap/modify method behavior.
-    3. **Property Decorator**: Receives the target object and property key; can define metadata or alter property getters/setters.
-    4. **Parameter Decorator**: Receives the target, method name, and parameter index; often used for dependency injection metadata.
+        - **Change Detection Strategy**:
+          - Angular provides two strategies via \`ChangeDetectionStrategy\`:
+            - \`Default\`: (default) checks the component **and all child components** whenever change detection runs.
+            - \`OnPush\`: only checks the component if:
+              - An @Input() changes by reference.
+              - An event originates from the component.
+              - You manually trigger change detection.
+          - \`OnPush\` improves performance in large apps by reducing how often Angular checks for changes.
     
-    Example (class decorator):
-    \`\`\`ts
-    function Sealed(constructor: Function) {
-      Object.seal(constructor);
-      Object.seal(constructor.prototype);
-    }
+        - **detectChanges()**:
+          - A method provided by \`ChangeDetectorRef\` to **manually trigger change detection** for a component.
+          - Useful when you make changes *outside Angular’s zone* (e.g., in setTimeout or 3rd-party code) and Angular doesn't automatically detect them.
     
-    @Sealed
-    class MyClass {
-      name = 'Test';
-    }
-    \`\`\`
-    Here, applying \`@Sealed\` seals the class and its prototype so no new properties can be added.
+        - Example:
+          \`\`\`ts
+          constructor(private cd: ChangeDetectorRef, private zone: NgZone) {}
     
-    Example (method decorator):
-    \`\`\`ts
-    function Log(
-      target: any,
-      propertyKey: string,
-      descriptor: PropertyDescriptor
-    ) {
-      const originalMethod = descriptor.value;
-      descriptor.value = function (...args: any[]) {
-        console.log(\`Calling \${propertyKey} with args:\`, args);
-        const result = originalMethod.apply(this, args);
-        console.log(\`\${propertyKey} returned:\`, result);
-        return result;
-      };
-      return descriptor;
-    }
-    
-    class Calculator {
-      @Log
-      add(a: number, b: number) {
-        return a + b;
-      }
-    }
-    
-    const calc = new Calculator();
-    calc.add(2, 3);
-    // Logs:
-    // Calling add with args: [2, 3]
-    // add returned: 5
-    \`\`\`
-        `.trim()
+          ngOnInit() {
+            this.zone.runOutsideAngular(() => {
+              setTimeout(() => {
+                this.data = 'updated';
+                this.zone.run(() => {
+                  this.cd.detectChanges(); // manually trigger CD
+                });
+              }, 1000);
+            });
+          }
+          \`\`\`
+      `.trim()
     },
     {
       id: 16,
-      question: `Angular (Advanced): Compare AOT vs JIT compilation and explain how Ivy’s tree-shaking differs from View Engine’s approach.`,
+      category: 'Angular',
+      difficulty: 'Intermediate',
+      question: 'What is the difference between Pure and Impure Pipes in Angular?',
       answer: `
-    1. **JIT (Just-In-Time) Compilation**:
-       - Happens in the browser at runtime.
-       - Angular takes the templates (component HTML and CSS) and compiles them into JavaScript code when the app loads.
-       - Advantages:
-         - Faster incremental builds in development ('ng serve' recompiles quickly).
-         - Templates are compiled during runtime, useful for quick experimentation.
-       - Disadvantages:
-         - Larger bundle size (includes the compiler).
-         - Slower initial load (compilation cost in the browser).
+        - **Pipes** transform data in templates — e.g., \`date\`, \`uppercase\`, or custom ones.
+        
+        - **Pure Pipe** (default):
+          - Executes **only when**:
+            - Input value changes **by reference** (for objects/arrays).
+            - Primitive input value changes.
+          - Offers better performance — fewer calls.
+          - Angular assumes input is immutable or pure.
+          - Example:
+            \`\`\`ts
+            @Pipe({ name: 'myPipe' }) // pure: true by default
+            export class MyPipe implements PipeTransform {
+              transform(value: any): any { ... }
+            }
+            \`\`\`
     
-    2. **AOT (Ahead-Of-Time) Compilation**:
-       - Happens at build time.
-       - Angular’s compiler runs on your machine (CI or dev machine), compiles templates into optimized JavaScript, and produces a leaner bundle.
-       - Advantages:
-         - Smaller bundle (no compiler included).
-         - Faster startup (templates already compiled).
-         - Template errors caught during build rather than runtime.
-       - Disadvantages:
-         - Longer build time (compilation happens on each build).
+        - **Impure Pipe**:
+          - Executes on **every change detection cycle**, even if input hasn't changed.
+          - Useful when input data is **mutable** or **external** (e.g., current time, random values).
+          - **Performance hit** due to frequent invocations.
+          - Must be marked explicitly:
+            \`\`\`ts
+            @Pipe({ name: 'myImpurePipe', pure: false })
+            export class MyImpurePipe implements PipeTransform {
+              transform(value: any): any { ... }
+            }
+            \`\`\`
     
-    3. **Ivy vs View Engine Tree-Shaking**:
-       - **View Engine**: Used static analysis to detect metadata (from \`@Component\`, \`@NgModule\`, etc.) and then relied on Uglify/Terser to remove unreachable code. However, because of the way factories and metadata were generated, many unused components/modules might still end up in the bundle.
-       - **Ivy**: Generates highly granular, per-component instructions. Each component, directive, and service has its own “factory” function that is referenced only where needed.  
-         - **Tree-shaking** in Ivy is more effective because:
-           1. Unused component metadata is not pulled into the bundle.
-           2. Ivy’s compiled output is less boilerplate—only the minimal runtime instructions remain.
-           3. Angular CLI can drop unused providers, directives, and pipes more reliably.
+        - 🔥 **When to use what?**
+          - Use **pure pipes** for static or immutable data.
+          - Use **impure pipes** only when absolutely needed (e.g., pipes relying on real-time data).
     
-    Example (build flags):
-    \`\`\`bash
-    # JIT build (default for dev)
-    ng build
-    
-    # AOT build (commonly used for production)
-    ng build --prod --aot
-    \`\`\`
-    
-    In Angular 16+, Ivy is the default compiler. It further optimizes by generating “partial” Ivy code for libraries, enabling them to be tree-shaken even when published as pre-compiled packages.
-    
-        `.trim()
+        - ⚠️ Warning:
+          - Impure pipes can significantly slow down performance in large templates.
+      `.trim()
     },
     {
       id: 17,
-      question: `JavaScript (Advanced): What is the difference between debounce and throttle? Provide use cases.`,
+      category: 'HTML/CSS',
+      difficulty: 'Intermediate',
+      question: 'What is the difference between Flexbox and Grid in CSS?',
       answer: `
-      - **Debounce**: Ensures that a function is only called after a specified “quiet” period has passed since the last invocation. If the user keeps triggering the event (e.g., typing in a search box), the debounce timer resets each time. Only after the user stops triggering for the defined delay will the function run.
-      
-        **Example (debounce)**:
-        \`\`\`js
-        function debounce(fn, delay) {
-          let timer;
-          return function (...args) {
-            clearTimeout(timer);
-            timer = setTimeout(() => fn.apply(this, args), delay);
-          };
-        }
-      
-        const onSearch = (query) => console.log('Search for:', query);
-        const debouncedSearch = debounce(onSearch, 300);
-      
-        // If user types rapidly:
-        inputElement.addEventListener('input', (e) => {
-          debouncedSearch(e.target.value);
-        });
-        \`\`\`
-      
-        **Use case**: Live search boxes, window resizing handlers—only run after the user has finished typing or resizing.
-      
-      - **Throttle**: Ensures that a function is only called at most once in a specified time window. If the user triggers the event repeatedly, the function runs immediately on the first trigger, then ignores subsequent triggers until the delay has passed.
-      
-        **Example (throttle)**:
-        \`\`\`js
-        function throttle(fn, limit) {
-          let lastCall = 0;
-          return function (...args) {
-            const now = Date.now();
-            if (now - lastCall >= limit) {
-              lastCall = now;
-              fn.apply(this, args);
-            }
-          };
-        }
-      
-        const onScroll = () => console.log('Scroll event');
-        const throttledScroll = throttle(onScroll, 200);
-      
-        window.addEventListener('scroll', throttledScroll);
-        \`\`\`
-      
-        **Use case**: Scroll events, mousemove events—limit how often a handler runs to improve performance.
-          `.trim()
+        - Both **Flexbox** and **Grid** are layout systems in CSS, but they serve different purposes:
+    
+        - **Flexbox (Flexible Box Layout)**:
+          - One-dimensional layout system: works in **a single direction** — row or column.
+          - Best for laying out items **in a line** or along **one axis**.
+          - Automatically adjusts item sizes and spacing.
+          - Great for components like nav bars, buttons in a row, etc.
+          - Example:
+            \`\`\`css
+            display: flex;
+            flex-direction: row; /* or column */
+            justify-content: space-between;
+            align-items: center;
+            \`\`\`
+    
+        - **Grid (CSS Grid Layout)**:
+          - Two-dimensional layout system: works in **both rows and columns**.
+          - Ideal for complex page layouts — think of it as a **table without markup**.
+          - Allows precise placement of items using grid lines, areas, and spans.
+          - Example:
+            \`\`\`css
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            grid-template-rows: auto;
+            gap: 10px;
+            \`\`\`
+    
+        - 🔥 **Flex vs Grid — When to Use What?**
+          - Use **Flexbox** for simpler, linear layouts (like toolbars or cards in a row).
+          - Use **Grid** for full-page layouts or anything with rows **and** columns.
+    
+        - 💡 Tip:
+          - You can combine them! Use Grid for page layout, and Flexbox for layout **inside** each grid item.
+      `.trim()
     },
     {
       id: 18,
-      question: `TypeScript (Advanced): What are mapped types? Give an example of creating a Partial type manually.`,
+      category: 'Angular',
+      difficulty: 'Intermediate',
+      question: 'What are @HostBinding and @HostListener in Angular?',
       answer: `
-      **Mapped Types** allow you to create new types by transforming each property in an existing type. You iterate over the keys of a type using \`[K in keyof T]\`.
-      
-      - **Built-in example**: \`Partial<T>\`, which makes all properties optional.
-        \`\`\`ts
-        // Built-in TypeScript definition for Partial:
-        type Partial<T> = {
-          [K in keyof T]?: T[K];
-        };
-        \`\`\`
-      
-      - **Manual example**: Suppose we have an interface:
-        \`\`\`ts
-        interface User {
-          id: number;
-          name: string;
-          isActive: boolean;
-        }
-        \`\`\`
-      
-        We can create a mapped type that makes all properties nullable:
-        \`\`\`ts
-        type NullableUser = {
-          [K in keyof User]: User[K] | null;
-        };
-      
-        // Equivalent to:
-        // type NullableUser = {
-        //   id: number | null;
-        //   name: string | null;
-        //   isActive: boolean | null;
-        // };
-        \`\`\`
-      
-      - **Creating a Readonly type manually**:
-        \`\`\`ts
-        type MyReadonly<T> = {
-          readonly [K in keyof T]: T[K];
-        };
-      
-        // Usage
-        const user: MyReadonly<User> = { id: 1, name: 'Alice', isActive: true };
-        // user.id = 2; // Error: Cannot assign to 'id' because it is a read-only property.
-        \`\`\`
-      
-      **Use cases**: Building utility types (Partial, Required, Readonly, Pick, Record) and enforcing consistent transformations across all properties of a type.
-          `.trim()
+        - Both **@HostBinding** and **@HostListener** are decorators used to interact with the **host element** of a directive or component.
+    
+        - **@HostBinding**:
+          - Binds a property or attribute of the host element to a value in the directive/component.
+          - Useful for dynamically setting **classes**, **styles**, **attributes**, etc.
+          - Example:
+            \`\`\`ts
+            @Directive({ selector: '[myHighlight]' })
+            export class HighlightDirective {
+              @HostBinding('style.backgroundColor') bg = 'yellow';
+            }
+            \`\`\`
+            - This sets the background color of the host element to yellow.
+    
+        - **@HostListener**:
+          - Listens to **DOM events** on the host element and calls a method in response.
+          - Useful for adding event listeners like click, mouseover, etc.
+          - Example:
+            \`\`\`ts
+            @Directive({ selector: '[myHighlight]' })
+            export class HighlightDirective {
+              @HostBinding('style.backgroundColor') bg = 'transparent';
+    
+              @HostListener('mouseenter') onMouseEnter() {
+                this.bg = 'lightblue';
+              }
+    
+              @HostListener('mouseleave') onMouseLeave() {
+                this.bg = 'transparent';
+              }
+            }
+            \`\`\`
+            - This changes the background color when the mouse enters/leaves the element.
+    
+        - 🔁 Summary:
+          - \`@HostBinding\` → Binds properties **to the host element**.
+          - \`@HostListener\` → Listens to **events from the host element**.
+    
+        - 💡 Common use cases:
+          - Creating custom directives (e.g., hover effects,`
     },
     {
       id: 19,
-      question: `Angular (Intermediate): What is the difference between Subject, BehaviorSubject, and ReplaySubject in RxJS? Provide code examples for each.`,
+      category: 'JavaScript',
+      difficulty: 'Intermediate',
+      question: 'What is a Closure in JavaScript?',
       answer: `
-      - **Subject**: A multicast Observable. New subscribers only receive values emitted after they subscribe. Does not hold a current value.
-        \`\`\`ts
-        import { Subject } from 'rxjs';
-      
-        const subj = new Subject<number>();
-      
-        subj.subscribe((v) => console.log('Subscriber A:', v));
-        subj.next(1); // Subscriber A: 1
-      
-        subj.subscribe((v) => console.log('Subscriber B:', v));
-        subj.next(2);
-        // Subscriber A: 2
-        // Subscriber B: 2
-        \`\`\`
-      
-      - **BehaviorSubject**: Requires an initial value. It holds the current value and emits it immediately to new subscribers, then continues with subsequent values.
-        \`\`\`ts
-        import { BehaviorSubject } from 'rxjs';
-      
-        const behavior = new BehaviorSubject<string>('initial');
-      
-        behavior.subscribe((v) => console.log('Subscriber A:', v));
-      // Subscriber A: initial
-      
-        behavior.next('first update');
-      // Subscriber A: first update
-      
-        behavior.subscribe((v) => console.log('Subscriber B:', v));
-      // Subscriber B: first update
-      
-        behavior.next('second update');
-      // Subscriber A: second update
-      // Subscriber B: second update
-        \`\`\`
-      
-      - **ReplaySubject**: Buffers a specified number of past values (or within a time window) and replays them to new subscribers before emitting new values.
-        \`\`\`ts
-        import { ReplaySubject } from 'rxjs';
-      
-        // Buffer size 2: keeps last 2 values
-        const replay = new ReplaySubject<number>(2);
-      
-        replay.next(10);
-        replay.next(20);
-        replay.next(30);
-      
-        replay.subscribe((v) => console.log('Subscriber A:', v));
-      // Subscriber A: 20
-      // Subscriber A: 30
-      
-        replay.next(40);
-      // Subscriber A: 40
-      
-        replay.subscribe((v) => console.log('Subscriber B:', v));
-      // Subscriber B: 30
-      // Subscriber B: 40
-        \`\`\`
-      
-      **Use cases**:
-      - Use **Subject** when you just need an event bus—subscribers only care about future events.
-      - Use **BehaviorSubject** when you need to keep the latest value (e.g., application state store, current user).
-      - Use **ReplaySubject** when you want to replay a fixed number of past events to subscribers (e.g., chat history).
-          `.trim()
+        - A **closure** is created when a function **remembers** the variables from its **lexical scope**, even after the outer function has finished executing.
+        - It allows **data encapsulation** and is the base for many patterns (e.g., private variables, function factories).
+        - Example:
+          \`\`\`js
+          function outer() {
+            let count = 0;
+            return function inner() {
+              count++;
+              console.log(count);
+            };
+          }
+    
+          const counter = outer();
+          counter(); // 1
+          counter(); // 2
+          \`\`\`
+        - Even though \`outer()\` has finished, \`inner()\` keeps access to \`count\` — that’s a **closure**.
+      `.trim()
     },
+    {
+      id: 20,
+      category: 'Angular',
+      difficulty: 'Intermediate',
+      question: 'What is the async pipe in Angular?',
+      answer: `
+        - The **async pipe** automatically subscribes to an **Observable** or **Promise** and returns the latest emitted value in the template.
+        - It also **automatically unsubscribes** when the component is destroyed.
+        - Prevents memory leaks and boilerplate subscription code.
+        - Syntax:
+          \`\`\`html
+          <div *ngIf="data$ | async as data">
+            {{ data.name }}
+          </div>
+          \`\`\`
+        - Works well with \`HttpClient\`, \`NgRx store.select\`, and \`BehaviorSubject\`.
+      `.trim()
+    },
+    {
+      id: 21,
+      category: 'Angular',
+      difficulty: 'Advanced',
+      question: 'What is NgRx in Angular?',
+      answer: `
+        - **NgRx** is a state management library for Angular, inspired by **Redux**.
+        - Uses **RxJS** and a **unidirectional data flow** model.
+        - Core concepts:
+          - **Store**: Single source of truth (global state).
+          - **Actions**: Describe *what happened* (e.g., LoadUser).
+          - **Reducers**: Describe *how state changes* based on actions.
+          - **Selectors**: Extract pieces of state.
+          - **Effects**: Handle side effects like HTTP requests.
+        - Benefits:
+          - Predictable state.
+          - DevTools for debugging.
+          - Centralized logic and scalability.
+        - Example:
+          \`\`\`ts
+          store.dispatch(loadUsers());
+          store.select(selectAllUsers).subscribe(...);
+          \`\`\`
+      `.trim()
+    },
+    {
+      id: 22,
+      category: 'JavaScript',
+      difficulty: 'Intermediate',
+      question: 'What are key ES6 features in JavaScript?',
+      answer: `
+        - ES6 (ECMAScript 2015) introduced many modern features. Key ones:
+          - \`let\` and \`const\`: Block-scoped variables.
+          - Arrow functions: \`() => {}\` syntax, lexical \`this\`.
+          - Template literals: \`Hello, \${name}!\`
+          - Destructuring: \`const {a, b} = obj;\`
+          - Default parameters: \`function greet(name = 'Guest') {}\`
+          - Spread/rest: \`...arr\`, \`function(...args)\`
+          - Classes: \`class Person { constructor() {} }\`
+          - Modules: \`import/export\`
+          - Promises: Native async handling.
+          - Map/Set: New data structures.
+          - \`for...of\`: Iterating over iterables.
+      `.trim()
+    },
+    {
+      id: 24,
+      category: 'JavaScript',
+      difficulty: 'Intermediate',
+      question: 'What is Object and Array Destructuring in JavaScript?',
+      answer: `
+        - **Destructuring** lets you extract values from arrays or properties from objects into distinct variables.
+    
+        - 🔹 **Array Destructuring**:
+          - Order matters (based on index).
+          - Example:
+            \`\`\`js
+            const nums = [10, 20, 30];
+            const [a, b] = nums;
+            console.log(a); // 10
+            console.log(b); // 20
+            \`\`\`
+    
+          - You can skip values or use rest:
+            \`\`\`js
+            const [first, , third] = [1, 2, 3]; // skip 2
+            const [x, ...others] = [5, 6, 7]; // others = [6, 7]
+            \`\`\`
+    
+        - 🔸 **Object Destructuring**:
+          - Matches by **property name**, not order.
+          - Example:
+            \`\`\`js
+            const user = { name: 'John', age: 25 };
+            const { name, age } = user;
+            console.log(name); // 'John'
+            \`\`\`
+    
+          - Can rename or set default values:
+            \`\`\`js
+            const { name: username = 'Guest' } = {};
+            console.log(username); // 'Guest'
+            \`\`\`
+    
+        - 💡 Tip:
+          - Destructuring is often used in **function parameters**, **React props**, or **config objects**.
+    
+        - ✅ Clean, concise, and makes code easier to read!
+      `.trim()
+    },
+    {
+      id: 25,
+      category: 'HTML/CSS',
+      difficulty: 'Beginner',
+      question: 'What is the CSS Box Model?',
+      answer: `
+        - The **CSS Box Model** describes how every HTML element is represented as a rectangular box composed of several layers:
+    
+        - 🧱 Layers of the Box Model (from inside out):
+          1. **Content**: The actual text or image inside the element.
+          2. **Padding**: Space between content and border.
+          3. **Border**: Surrounds the padding and content.
+          4. **Margin**: Space outside the border — separates elements from others.
+    
+        - 📏 Formula:
+          \`\`\`
+          Total Width = content + padding (left+right) + border (left+right) + margin (left+right)
+          Total Height = content + padding (top+bottom) + border (top+bottom) + margin (top+bottom)
+          \`\`\`
+    
+        - 🛠️ Box-Sizing:
+          - \`box-sizing: content-box\`: default, does not include padding/border in width.
+          - \`box-sizing: border-box\`: includes padding and border in width/height → recommended.
+            \`\`\`css
+            * {
+              box-sizing: border-box;
+            }
+            \`\`\`
+      `.trim()
+    },
+    {
+      id: 26,
+      category: 'HTML/CSS',
+      difficulty: 'Beginner',
+      question: 'What are CSS pseudo-classes?',
+      answer: `
+        - **Pseudo-classes** let you apply styles to elements **based on their state or position**, without needing extra classes or JS.
+    
+        - 🧩 Syntax:
+          \`\`\`css
+          selector:pseudo-class { styles }
+          \`\`\`
+    
+        - 🔹 Common pseudo-classes:
+          - \`:hover\` → when mouse hovers
+          - \`:active\` → when clicked
+          - \`:focus\` → when element is focused
+          - \`:nth-child(n)\` → target specific child index
+          - \`:first-child\`, \`:last-child\`, \`:not(selector)\`
+    
+        - 📌 Example:
+          \`\`\`css
+          button:hover {
+            background-color: blue;
+          }
+    
+          li:nth-child(odd) {
+            background: #f0f0f0;
+          }
+          \`\`\`
+    
+        - 💡 Tip:
+          - Pseudo-classes enhance UX (e.g., highlighting, form validation) without JS.
+      `.trim()
+    },
+    {
+      id: 27,
+      category: 'Angular',
+      difficulty: 'Intermediate',
+      question: 'What is the difference between ng-template, ng-container, and ngTemplateOutlet in Angular?',
+      answer: `
+        - These three are Angular structural elements used to manage dynamic rendering and view control, but they serve different purposes.
+    
+        - 🔹 **\`<ng-template>\`**:
+          - Defines a **template block** that **does not render** by default.
+          - Used to hold code for conditional rendering, reusable views, or structural directives.
+          - Not part of the DOM until rendered explicitly.
+          - Example:
+            \`\`\`html
+            <ng-template #loadingTemplate>
+              <p>Loading...</p>
+            </ng-template>
+            \`\`\`
+    
+        - 🔸 **\`<ng-container>\`**:
+          - A **logical container** used to group elements *without adding extra DOM nodes*.
+          - Useful with structural directives like \`*ngIf\` or \`*ngFor\`.
+          - Does not render any wrapper in the final HTML.
+          - Example:
+            \`\`\`html
+            <ng-container *ngIf="isLoggedIn">
+              <p>Welcome!</p>
+              <button>Logout</button>
+            </ng-container>
+            \`\`\`
+    
+        - 🔻 **\`ngTemplateOutlet\`**:
+          - A directive used to **render an ng-template** programmatically.
+          - Lets you choose and inject templates dynamically.
+          - Example:
+            \`\`\`html
+            <ng-template #errorTpl>
+              <p>Error occurred</p>
+            </ng-template>
+    
+            <ng-container *ngTemplateOutlet="errorTpl"></ng-container>
+            \`\`\`
+    
+        - 🔁 Summary:
+          | Element           | Renders DOM? | Purpose                              |
+          |-------------------|--------------|--------------------------------------|
+          | \`<ng-template>\`     | ❌           | Define hidden template blocks        |
+          | \`<ng-container>\`    | ❌           | Group elements without extra tags    |
+          | \`ngTemplateOutlet\` | N/A          | Render a selected \`<ng-template>\`    |
+    
+        - 💡 Tip:
+          - Use \`ng-template\` to define.
+          - Use \`ng-container\` to structure logic.
+          - Use \`ngTemplateOutlet\` to render dynamically.
+      `.trim()
+    },
+    {
+      id: 28,
+      category: 'Angular',
+      difficulty: 'Intermediate',
+      question: 'What is the difference between ViewChild and ContentChild in Angular?',
+      answer: `
+        - Both **@ViewChild** and **@ContentChild** are decorators used to access child elements/components, but they apply to different contexts.
+    
+        - 🔹 **@ViewChild**:
+          - Accesses elements **inside the component's own template**.
+          - Use when you need to interact with child components, directives, or DOM inside the component.
+          - Example:
+            \`\`\`ts
+            @ViewChild('myInput') inputEl!: ElementRef;
+            \`\`\`
+            \`\`\`html
+            <input #myInput />
+            \`\`\`
+    
+        - 🔸 **@ContentChild**:
+          - Accesses projected content passed **into the component** using \`<ng-content>\`.
+          - Useful in reusable or wrapper components (like card, modal, etc.)
+          - Example:
+            \`\`\`ts
+            @ContentChild('title') titleTpl!: TemplateRef<any>;
+            \`\`\`
+            \`\`\`html
+            <app-wrapper>
+              <h1 #title>Hello</h1>
+            </app-wrapper>
+            \`\`\`
+    
+        - 🧠 Lifecycle Note:
+          - \`@ViewChild\` is available in \`ngAfterViewInit()\`
+          - \`@ContentChild\` is available in \`ngAfterContentInit()\`
+    
+        - ✅ Summary:
+          | Decorator      | Accesses...                    | Available in...         |
+          |----------------|--------------------------------|--------------------------|
+          | @ViewChild     | Template elements (own view)   | ngAfterViewInit          |
+          | @ContentChild  | Projected content via ng-content | ngAfterContentInit    |
+      `.trim()
+    },
+    {
+      id: 30,
+      category: 'JavaScript',
+      difficulty: 'Advanced',
+      question: 'What is event delegation and why is it useful?',
+      answer: `
+        - **Event delegation** is a technique where a single event listener is added to a **parent element** instead of adding listeners to multiple child elements.
+        - Events bubble up from the target element to its ancestors, so you can capture events on parent to handle all child interactions.
+        - Benefits:
+          - Improves performance by reducing the number of listeners.
+          - Works for dynamically added elements.
+        - Example:
+          \`\`\`js
+          document.getElementById('list').addEventListener('click', (event) => {
+            if(event.target && event.target.matches('li.item')) {
+              console.log('Clicked item:', event.target.textContent);
+            }
+          });
+          \`\`\`
+      `.trim()
+    },
+    {
+      id: 31,
+      category: 'JavaScript',
+      difficulty: 'Advanced',
+      question: 'What is a Promise and how does it work?',
+      answer: `
+        - A **Promise** is an object representing the eventual completion or failure of an asynchronous operation.
+        - It can be in one of three states:
+          - **Pending**: initial state.
+          - **Fulfilled**: operation completed successfully.
+          - **Rejected**: operation failed.
+        - Promises allow chaining with \`.then()\` and error handling with \`.catch()\`.
+        - Example:
+          \`\`\`js
+          const p = new Promise((resolve, reject) => {
+            setTimeout(() => resolve('Done!'), 1000);
+          });
+    
+          p.then(result => console.log(result))
+           .catch(err => console.error(err));
+          \`\`\`
+      `.trim()
+    },
+    {
+      id: 32,
+      category: 'JavaScript',
+      difficulty: 'Advanced',
+      question: 'What is the event loop in JavaScript?',
+      answer: `
+        - The **event loop** is a mechanism that allows JavaScript to perform **non-blocking asynchronous operations** despite being single-threaded.
+        - It manages two main queues:
+          - **Call Stack**: where functions get pushed and executed.
+          - **Task Queue (Callback Queue)**: where asynchronous callbacks wait.
+        - Process:
+          1. JS runs tasks from the call stack.
+          2. When stack is empty, it takes the first callback from the task queue.
+        - This allows async code like \`setTimeout\`, \`Promises\`, and DOM events to work smoothly.
+      `.trim()
+    },
+    {
+      id: 33,
+      category: 'JavaScript',
+      difficulty: 'Advanced',
+      question: 'What are generators and how are they different from regular functions?',
+      answer: `
+        - **Generators** are functions that can be **paused and resumed**.
+        - Declared with \`function*\` syntax.
+        - Use \`yield\` to pause and return intermediate values.
+        - When called, they return an **iterator** object.
+        - Useful for lazy evaluation, async flows, or handling infinite sequences.
+        - Example:
+          \`\`\`js
+          function* gen() {
+            yield 1;
+            yield 2;
+            return 3;
+          }
+    
+          const g = gen();
+          console.log(g.next()); // { value: 1, done: false }
+          console.log(g.next()); // { value: 2, done: false }
+          console.log(g.next()); // { value: 3, done: true }
+          \`\`\`
+      `.trim()
+    },
+    {
+      id: 34,
+      category: 'JavaScript',
+      difficulty: 'Advanced',
+      question: 'Explain the difference between call, apply, and bind methods.',
+      answer: `
+        - All three methods are used to set the \`this\` context for a function, but they differ in how arguments are passed:
+    
+        - \`call(thisArg, arg1, arg2, ...)\`:
+          - Invokes the function immediately.
+          - Arguments are passed individually.
+    
+        - \`apply(thisArg, [argsArray])\`:
+          - Invokes the function immediately.
+          - Arguments are passed as an array.
+    
+        - \`bind(thisArg, arg1, arg2, ...)\`:
+          - Returns a **new function** with \`this\` bound.
+          - Does not invoke immediately.
+          - Can be called later.
+    
+        - Example:
+          \`\`\`js
+          function greet(greeting, name) {
+            console.log(greeting + ', ' + name);
+          }
+    
+          greet.call(null, 'Hello', 'Alice');       // Hello, Alice
+          greet.apply(null, ['Hi', 'Bob']);          // Hi, Bob
+          const greetBob = greet.bind(null, 'Hey', 'Bob');
+          greetBob();                                // Hey, Bob
+          \`\`\`
+      `.trim()
+    },
+    {
+      id: 35,
+      category: 'HTML/CSS',
+      difficulty: 'Intermediate',
+      question: 'What are @extend, @use, and @mixin in Sass and how are they used?',
+      answer: `
+        - 🔹 **@extend**:
+          - Lets one selector inherit the styles of another selector.
+          - Avoids repeating styles and helps keep CSS DRY.
+          - Works by combining selectors in the compiled CSS.
+          - Example:
+            \`\`\`scss
+            .btn-primary {
+              background: blue;
+              color: white;
+            }
+    
+            .btn-special {
+              @extend .btn-primary;
+              font-weight: bold;
+            }
+            \`\`\`
+          - Drawback: can produce complex selectors if overused.
+    
+        - 🔸 **@mixin**:
+          - Defines a reusable block of styles or logic.
+          - Can accept parameters for flexibility.
+          - Include mixin styles with \`@include\`.
+          - Example:
+            \`\`\`scss
+            @mixin flex-center {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+    
+            .container {
+              @include flex-center;
+            }
+            \`\`\`
+    
+        - 🔹 **@use**:
+          - Introduced in newer Sass versions for **module management**.
+          - Imports another Sass file as a module.
+          - Helps avoid naming conflicts by namespacing imports.
+          - Example:
+            \`\`\`scss
+            // _variables.scss
+            $primary-color: blue;
+    
+            // styles.scss
+            @use 'variables';
+    
+            .header {
+              color: variables.$primary-color;
+            }
+            \`\`\`
+          - Preferred over \`@import\` in modern Sass workflows.
+    
+        - Summary:
+          | Directive  | Purpose                            | Key Use                      |
+          |------------|----------------------------------|------------------------------|
+          | @extend    | Inherit styles from another selector | Avoid repetition in selectors |
+          | @mixin     | Reusable style blocks with params | Write reusable, configurable styles |
+          | @use       | Import Sass modules with namespace | Manage code modularly & safely |
+      `.trim()
+    }
+    
+    
+    // (You can add additional QAItem objects here for TypeScript or HTML/CSS, etc.)
+  ];
 
+  constructor() {
+    // 1. Determine all distinct categories present in flatList (in insertion order)
+    const categories = Array.from(new Set(this.flatList.map(item => item.category))) as
+      ('JavaScript' | 'Angular' | 'TypeScript' | 'HTML/CSS')[];
 
-  ]
+    // 2. For each category, group its items by difficulty
+    this.categorizedList = categories.map(cat => {
+      const itemsInCat = this.flatList.filter(i => i.category === cat);
+
+      const difficulties = Array.from(
+        new Set(itemsInCat.map(i => i.difficulty))
+      ) as ('Intermediate' | 'Advanced')[];
+
+      const groups: DifficultyGroup[] = difficulties.map(diff => ({
+        difficulty: diff,
+        items: itemsInCat.filter(i => i.difficulty === diff)
+      }));
+
+      return { category: cat, groups };
+    });
+
+    // 3. Initialize the “selectedCategory” to the first category in the list
+    if (this.categorizedList.length > 0) {
+      this.selectedCategory = this.categorizedList[0].category;
+      // Set selectedDifficulty to the first difficulty group of that category
+      this.selectedDifficulty = this.categorizedList[0].groups[0].difficulty;
+    } else {
+      // Fallbacks (won’t happen if you have at least one question).
+      this.selectedCategory = 'JavaScript';
+      this.selectedDifficulty = 'Intermediate';
+    }
+  }
+
+  ngOnInit(): void {
+    // (No additional logic needed here in this example.)
+  }
+
+  // --- Getter to retrieve the CategoryGroup object for the currently selected category
+  get selectedCategoryGroup(): CategoryGroup | undefined {
+    return this.categorizedList.find(
+      (cg) => cg.category === this.selectedCategory
+    );
+  }
+
+  // --- Getter to retrieve the DifficultyGroup object for the currently selected difficulty
+  get selectedDifficultyGroup(): DifficultyGroup | undefined {
+    return this.selectedCategoryGroup?.groups.find(
+      (dg) => dg.difficulty === this.selectedDifficulty
+    );
+  }
+
+  // Called when the user clicks a category tab
+  selectCategory(cat: 'JavaScript' | 'Angular' | 'TypeScript' | 'HTML/CSS') {
+    this.selectedCategory = cat;
+
+    // Reset “selectedDifficulty” to the first difficulty group of the newly selected category
+    const firstDifficulty = this.selectedCategoryGroup?.groups[0]?.difficulty;
+    if (firstDifficulty) {
+      this.selectedDifficulty = firstDifficulty;
+    }
+  }
+
+  // Called when the user clicks a difficulty tab
+  selectDifficulty(diff: 'Intermediate' | 'Advanced') {
+    this.selectedDifficulty = diff;
+  }
+
+  // Toggle a question’s “expanded” flag (to show/hide its answer)
+  toggle(item: QAItem) {
+    item.expanded = !item.expanded;
+  }
 }

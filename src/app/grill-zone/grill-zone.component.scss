@@ -1,63 +1,159 @@
 .code-interview-hub {
-  max-width: 800px;
-  margin: 0 auto;
-  font-family: Arial, sans-serif;
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.5rem 2rem;
+  // background-color: #f9f9f9;
   color: #333;
+  font-family: 'Segoe UI', sans-serif;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 
   h2 {
     text-align: center;
-    margin-bottom: 1rem;
-    font-size: 1.8rem;
+    color: #222;
+    margin-bottom: 0.5rem;
   }
 
   p {
     text-align: center;
-    margin-bottom: 2rem;
-    font-size: 0.95rem;
-    color: #000;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    color: #555;
   }
 
-  .qa-item {
-    border-bottom: 1px solid #ddd;
-    padding: 0.75rem 0;
+  /* ------------------------------------
+     Category Tabs (Row #1)
+     ------------------------------------ */
+  .category-tabs {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 1rem;
 
-    .question {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #000;
+    button {
+      background-color: transparent;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
       cursor: pointer;
-      user-select: none;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: background-color 0.15s ease;
+
       &:hover {
-       filter: brightness(0.5);
+        background-color: #cce6ff;
       }
 
-      .id {
-        font-weight: bold;
-        margin-right: 0.5rem;
-      }
-
-      .text {
-        flex: 1;
-      }
-
-      .toggle-indicator {
-        margin-left: 1rem;
-        font-size: 1rem;
+      &.active {
+        background-color: #007acc;
+        color: white;
       }
     }
+  }
+  .difficulty-radios {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .radio-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  input[type="radio"]:checked + span {
+    font-weight: bold;
+  }
+  
+  /* ------------------------------------
+     Difficulty Tabs (Row #2)
+     ------------------------------------ */
+  .difficulty-tabs {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
 
-    .answer {
-      margin-top: 0.5rem;
-      padding-left: 1.5rem;
+    button {
+      background-color: #f0f8ff;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: background-color 0.15s ease;
 
-      pre {
-        white-space: pre-wrap; /* wrap long lines */
-        background-color: #f5f5f5;
-        border-radius: 4px;
-        padding: 0.75rem;
-        font-size: 0.9rem;
-        line-height: 1.4;
+      &:hover {
+        background-color: #d9ecff;
+      }
+
+      &.active {
+        background-color: #1e40af;
+        color: white;
+      }
+    }
+  }
+
+  /* ------------------------------------
+     Question List
+     ------------------------------------ */
+  .question-list {
+    margin: 1rem 0;
+
+    .qa-item {
+      margin: 0.75rem 0;
+      background-color: #fff;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+
+      .question {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.4rem 1rem;
+        font-weight: 500;
+        background-color: #f0f8ff;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+
+        &:hover {
+          background-color: #d9ecff;
+        }
+
+        .id {
+          margin-right: 0.5rem;
+          color: #0f172a;
+        }
+
+        .text {
+          flex: 1;
+          color: #0f172a;
+        }
+
+        .toggle-indicator {
+          margin-left: 1rem;
+          font-size: 1.2rem;
+          color: #1e3a8a;
+        }
+      }
+
+      .answer {
+        background-color: #fafafa;
+        padding: 0.9rem 1.25rem;
+        border-top: 1px solid #ddd;
+
+        pre {
+          margin: 0;
+          white-space: pre-wrap;
+          font-size: 0.95rem;
+          line-height: 1.4;
+          color: #1f2937;
+        }
       }
     }
   }
