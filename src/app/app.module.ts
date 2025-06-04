@@ -28,13 +28,15 @@ import { SunsetComponent } from './weathers/sunset/sunset.component';
 import { JSComponent } from './js/js.component';
 import { WeatherComponent } from './weathers/weather.component';
 import { WindEffectComponent } from './weathers/wind-effect/wind-effect.component';
+import { GrillZoneComponent } from './grill-zone/grill-zone.component';
 
 @NgModule({
   declarations: [AppComponent, HighlightDirective, CustomerViewComponent, CustomerAddComponent, BankAnalogyComponent, RestuarantAnalogyComponent, SnowfallComponent, RainComponent, SunriseComponent, SunsetComponent, CloudCanvasComponent, HeavyRainComponent, ExampleComponent, GuidelineComponent,
     WorkspaceComponent,
     JSComponent,
     WeatherComponent,
-    WindEffectComponent],
+    WindEffectComponent,
+    GrillZoneComponent],
   imports: [
     BrowserModule,
     CommonModule,

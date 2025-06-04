@@ -1,0 +1,18 @@
+<div class="code-interview-hub">
+  <h2>Code Interview Hub: JavaScript &amp; Angular Q&amp;A</h2>
+  <p><em>Click a question to expand/collapse the answer.</em></p>
+
+  <div class="qa-item" *ngFor="let item of qaList">
+    <div class="question" (click)="toggle(item)">
+      <span class="id">Q{{ item.id }}.</span>
+      <span class="text">{{ item.question }}</span>
+      <span class="toggle-indicator">
+        {{ item.expanded ? '▾' : '▸' }}
+      </span>
+    </div>
+
+    <div class="answer" *ngIf="item.expanded">
+      <pre>{{ item.answer }}</pre>
+    </div>
+  </div>
+</div>
