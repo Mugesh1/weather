@@ -65,7 +65,7 @@ export class WeatherService {
 
         // Clouds
         if (weatherMain === 'clouds') {
-          if (weatherDesc.includes('overcast')) return 'scatteredCloud';
+          if (weatherDesc.includes('overcast')) return 'OvercastCloud';
           if (weatherDesc.includes('scattered')) return 'OvercastCloud';
           if (weatherDesc.includes('broken')) return 'brokenCloud';
           return 'cloud';
