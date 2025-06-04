@@ -1,12 +1,19 @@
 .code-interview-hub {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 1.5rem 2rem;
-  // background-color: #f9f9f9;
-  color: #333;
-  font-family: 'Segoe UI', sans-serif;
-  border-radius: 8px;
+  max-height: 600px;
+  /* Set your desired max height */
+  z-index: 10000000;
+  overflow-y: auto;
+  /* Enables vertical scrolling */
+  overflow-x: hidden;
+  /* Optional: prevents horizontal scroll */
+  padding: 5rem;
+  /* Optional: space for scrollbar */
+  border: 1px solid #ccc;
+  /* Optional: to visually separate the scroll area */
+  background-color: transparent;
+  /* Optional: to match styling */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
 
   h2 {
     text-align: center;
@@ -50,12 +57,13 @@
       }
     }
   }
+
   .difficulty-radios {
     display: flex;
     gap: 1rem;
     margin-bottom: 1rem;
   }
-  
+
   .radio-label {
     display: flex;
     align-items: center;
@@ -63,11 +71,11 @@
     font-weight: 500;
     cursor: pointer;
   }
-  
-  input[type="radio"]:checked + span {
+
+  input[type="radio"]:checked+span {
     font-weight: bold;
   }
-  
+
   /* ------------------------------------
      Difficulty Tabs (Row #2)
      ------------------------------------ */
@@ -157,4 +165,17 @@
       }
     }
   }
+}
+
+.code-interview-hub::-webkit-scrollbar {
+  width: 8px;
+}
+
+.code-interview-hub::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+.code-interview-hub::-webkit-scrollbar-track {
+  background: transparent;
 }
