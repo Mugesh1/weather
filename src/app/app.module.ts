@@ -30,6 +30,7 @@ import { SunriseComponent } from './weathers/sunrise/sunrise.component';
 import { SunsetComponent } from './weathers/sunset/sunset.component';
 import { WeatherComponent } from './weathers/weather.component';
 import { WindEffectComponent } from './weathers/wind-effect/wind-effect.component';
+import { CustomCursorComponent } from './custom-cursor/custom-cursor.component';
 
 @NgModule({
   declarations: [AppComponent, HighlightDirective,MarkdownPipe, CustomerViewComponent, CustomerAddComponent, BankAnalogyComponent, RestuarantAnalogyComponent, SnowfallComponent, RainComponent, SunriseComponent, SunsetComponent, CloudCanvasComponent, HeavyRainComponent, ExampleComponent, GuidelineComponent,
@@ -37,7 +38,8 @@ import { WindEffectComponent } from './weathers/wind-effect/wind-effect.componen
     JSComponent,
     WeatherComponent,
     WindEffectComponent,
-    GrillZoneComponent],
+    GrillZoneComponent,
+    CustomCursorComponent],
   imports: [
     BrowserModule,
     CommonModule,
