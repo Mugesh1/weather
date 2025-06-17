@@ -9,6 +9,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CustomCursorComponent } from './custom-cursor/custom-cursor.component';
 import { CustomerAddComponent } from './customer/customer-add/customer-add.component';
 import { CustomerViewComponent } from './customer/customer-view/customer-view.component';
 import { CustomerReducer, customerFeatureKey } from './customer/store/reducer/customer.reducer';
@@ -30,7 +31,6 @@ import { SunriseComponent } from './weathers/sunrise/sunrise.component';
 import { SunsetComponent } from './weathers/sunset/sunset.component';
 import { WeatherComponent } from './weathers/weather.component';
 import { WindEffectComponent } from './weathers/wind-effect/wind-effect.component';
-import { CustomCursorComponent } from './custom-cursor/custom-cursor.component';
 
 @NgModule({
   declarations: [AppComponent, HighlightDirective,MarkdownPipe, CustomerViewComponent, CustomerAddComponent, BankAnalogyComponent, RestuarantAnalogyComponent, SnowfallComponent, RainComponent, SunriseComponent, SunsetComponent, CloudCanvasComponent, HeavyRainComponent, ExampleComponent, GuidelineComponent,
@@ -39,7 +39,8 @@ import { CustomCursorComponent } from './custom-cursor/custom-cursor.component';
     WeatherComponent,
     WindEffectComponent,
     GrillZoneComponent,
-    CustomCursorComponent],
+    CustomCursorComponent,
+],
   imports: [
     BrowserModule,
     CommonModule,
