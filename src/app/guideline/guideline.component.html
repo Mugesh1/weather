@@ -1,83 +1,92 @@
 <div appHighlight class="doc-style container py-4">
-  <h2 class="mb-4">NgRx: Redux Library for Angular</h2>
-  <p><strong>NgRx</strong> is a library — it provides state management utilities inspired by Redux to help manage and centralize application state in Angular apps.</p>
-  
-  <h3 class="mt-5 mb-3">Core Concepts</h3>
+  <h2 class="mb-4">{{"NgRx: Redux Library for Angular" | translate}}</h2>
+  <p><strong>{{'NgRx' | translate}}</strong> {{"is a library — it provides state management utilities inspired by Redux
+    to help manage and centralize application state in Angular apps." | translate}}</p>
+
+  <h3 class="mt-5 mb-3">{{"Core Concepts" | translate}}</h3>
   <ul class="list-group mb-4">
-    <li class="list-group-item"><strong>Action:</strong> Event triggered &#40;Add, Edit, View, etc.&#41;</li>
-    <li class="list-group-item"><strong>Reducer:</strong> Listens to actions and manages state updates by comparing old and new states.</li>
-    <li class="list-group-item"><strong>Store:</strong> Container that holds the entire application state. Use <code>selector</code> to access specific data.</li>
-    <li class="list-group-item"><strong>Effects:</strong> Handles side effects like API calls or other asynchronous operations.</li>
+    <li class="list-group-item"><strong>{{"Action:" | translate}}</strong> {{"Event triggered"| translate}} &#40;{{"Add,
+      Edit, View, etc."| translate}}&#41;</li>
+    <li class="list-group-item"><strong>{{"Reducer:" | translate}}</strong> {{"Listens to actions and manages state
+      updates by comparing old and new states."| translate}}</li>
+    <li class="list-group-item"><strong>{{"Store:" | translate}}</strong> {{"Container that holds the entire application
+      state. Use" | translate}} <code>{{"selector" | translate}}</code> {{"to access specific data." | translate}}</li>
+    <li class="list-group-item"><strong>{{"Effects:" | translate}}</strong> {{"Handles side effects like API calls or
+      other asynchronous operations." | translate}}</li>
   </ul>
-  
-  <h3 class="mt-5 mb-3">Step-by-Step Setup</h3>
-  
-  <h4 class="mt-4 mb-2">Step 1: Add Schematics</h4>
+
+  <h3 class="mt-5 mb-3">{{"Step-by-Step Setup" | translate}}</h3>
+
+  <h4 class="mt-4 mb-2">{{"Step 1: Add Schematics" | translate}}</h4>
   <pre><code>ng add &#64;ngrx/schematics</code></pre>
-  <p>This helps generate NgRx components:</p>
+  <p>{{"This helps generate NgRx components:" | translate}}</p>
   <ul class="list-group mb-4">
     <li class="list-group-item"><code>ng g action &#123;name&#125;</code></li>
     <li class="list-group-item"><code>ng g selector &#123;name&#125;</code></li>
     <li class="list-group-item"><code>ng g reducer &#123;name&#125;</code></li>
   </ul>
-  
-  <h4 class="mt-4 mb-2">Step 2: Set Default Collection</h4>
+
+  <h4 class="mt-4 mb-2">{{"Step 2: Set Default Collection" | translate}}</h4>
   <pre><code>ng config cli.defaultCollection &#64;ngrx/schematics</code></pre>
-  <p><strong>Note:</strong> For Angular v13+, use:</p>
+  <p><strong>{{"Note:" | translate}}</strong> {{"For Angular v13+, use:" | translate}}</p>
   <pre><code>ng config schematics.&#64;ngrx/schematics.collection &#64;ngrx/schematics</code></pre>
-  
-  <h4 class="mt-4 mb-2">Step 3: Install Dependencies</h4>
+
+  <h4 class="mt-4 mb-2">{{"Step 3: Install Dependencies" | translate}}</h4>
   <pre><code>
   npm install &#64;ngrx/store --save
   npm install &#64;ngrx/effects --save
   npm install &#64;ngrx/entity --save
   npm install &#64;ngrx/store-devtools --save
   </code></pre>
-  
-  <h4 class="mt-4 mb-2">Step 4: Generate Store</h4>
+
+  <h4 class="mt-4 mb-2">{{"Step 4: Generate Store" | translate}}</h4>
   <pre><code>ng g store &#123;name&#125; --root --module app.module.ts</code></pre>
-  
-  <h4 class="mt-4 mb-2">Step 5: Create Model</h4>
+
+  <h4 class="mt-4 mb-2">{{"Step 5: Create Model" | translate}}</h4>
   <pre><code>ng g class models/&#123;name&#125;</code></pre>
-  
-  <h4 class="mt-4 mb-2">Step 6: Create Action</h4>
-  
-  <p>Run the command:</p>
+
+  <h4 class="mt-4 mb-2">{{"Step 6: Create Action" | translate}}</h4>
+
+  <p>{{"Run the command:" | translate}}</p>
   <pre><code>ng g action customer</code></pre>
-  
-  <p>This will create an Action file.</p>
-  
-  <p><strong>Action takes two parameters:</strong></p>
+
+  <p>{{"This will create an Action file." | translate}}</p>
+
+  <p><strong>{{"Action takes two parameters:" | translate}}</strong></p>
   <ol class="mb-4">
-    <li><strong>Action Name:</strong><br>
-        Example:<br>
-        <code>&#91;Customer&#93; Add Customers</code>
+    <li><strong>{{"Action Name:" | translate}}</strong><br>
+      {{"Example:" | translate}}<br>
+      <code>&#91;{{"Customer"}}&#93; {{"Add Customers" }}</code>
     </li>
-    <li><strong>Data &#40;optional&#41;:</strong><br>
-        Example:<br>
-        <code>&#123; customer &#125;</code>
+    <li><strong>{{"Data" | translate}} &#40;{{"optional" | translate}}&#41;:</strong><br>
+      {{"Example:" | translate}}<br>
+      <code>&#123; {{"customer"}} &#125;</code>
     </li>
   </ol>
-  
-  <p>Together, it would look like:</p>
-  <pre><code>&#91;Customer&#93; Add Customers, &#123; customer &#125;</code></pre>
-  
+
+  <p>{{"Together, it would look like:" | translate}}</p>
+  <pre><code>&#91;{{"Customer"}}&#93; {{"Add Customers"}}, &#123; {{"customer"}} &#125;</code></pre>
+
   <ul class="list-group mb-4">
-    <li class="list-group-item"><code>&#91;Customer&#93;</code> – Represents the feature or state name</li>
-    <li class="list-group-item"><code>Add Customers</code> – Describes the action</li>
-    <li class="list-group-item"><code>&#123; customer &#125;</code> – Payload or data being passed</li>
+    <li class="list-group-item"><code>&#91;{{"Customer"}}&#93;</code> – {{"Represents the feature or state name" |
+      translate}}</li>
+    <li class="list-group-item"><code>{{"Add Customers"}}</code> – {{"Describes the action"| translate}}</li>
+    <li class="list-group-item"><code>&#123; {{"customer"}} &#125;</code> – {{"Payload or data being passed"|
+      translate}}</li>
   </ul>
-  
-  <h5 class="mt-4 mb-3">Types of Action Configurations</h5>
-  
-  <p><strong>1. Using <code>createAction</code> &#40;for simple actions&#41;:</strong></p>
+
+  <h5 class="mt-4 mb-3">{{"Types of Action Configurations"| translate}}</h5>
+
+  <p><strong>{{"1. Using"| translate}} <code>createAction</code> &#40;{{"for simple actions"| translate}}&#41;:</strong>
+  </p>
   <pre><code class="typescript">export const addCustomer = createAction&#40;
     '&#91;Customer&#93; Add Customer',
     props&lt;&#123; customer: Customer &#125;&gt;&#40;&#41;
   &#41;;
   </code></pre>
-  
-  <p><strong>2. Using <code>createActionGroup</code> &#40;for grouped actions&#41;:</strong></p>
+
+  <p><strong>{{"2. Using"| translate}} <code>createActionGroup</code> &#40;{{"for grouped actions"|
+      translate}}&#41;:</strong></p>
   <pre><code class="typescript">export const addCustomers = createActionGroup&#40;&#123;
     source: 'Customer',
     events: &#123;
@@ -86,37 +95,42 @@
     &#125;
   &#125;&#41;;
   </code></pre>
-  
-  <h5 class="mt-4 mb-3">Extras</h5>
+
+  <h5 class="mt-4 mb-3">{{"Extras" | translate}}</h5>
   <ul class="list-group mb-4">
-    <li class="list-group-item"><code>props&lt;&#123; data &#125;&gt;&#40;&#41;</code> – Passes data to the reducer</li>
-    <li class="list-group-item"><code>emptyProps&#40;&#41;</code> – For actions with no payload &#40;e.g., loading state&#41;</li>
+    <li class="list-group-item"><code>props&lt;&#123; data &#125;&gt;&#40;&#41;</code> – {{"Passes data to the reducer"|
+      translate}}</li>
+    <li class="list-group-item"><code>emptyProps&#40;&#41;</code> – {{"For actions with no payload"| translate}}
+      &#40;{{"e.g., loading state"| translate}}&#41;</li>
   </ul>
-  
-  <h4 class="mt-4 mb-2">Step 7:</h4>
-  
-  <p>Run <code>ng g reducer customer</code><br>
-  Will Create a Reducer</p>
-  
+
+  <h4 class="mt-4 mb-2">{{"Step 7:"| translate}}</h4>
+
+  <p>{{"Run"| translate}} <code>ng g reducer customer</code><br>
+    {{"Will Create a Reducer"| translate}}</p>
+
   <ol class="mb-4">
     <li>
-      This defines the shape of your global state for this feature (likely in a <code>customer.reducer.ts</code> file). The state has one property: <code>customer</code>, which is an array of <code>Customer</code> objects.
+      {{"This defines the shape of your global state for this feature (likely in a"| translate}}
+      <code>customer.reducer.ts</code> {{"file). The state has one property:"| translate}} <code>customer</code>,
+      {{"which is an array of"| translate}} <code>Customer</code> {{"objects."| translate}}
       <pre><code class="typescript">export interface State &#123;
     customer: Customer&#91;&#93;;
   &#125;
   </code></pre>
     </li>
-  
+
     <li>
-      This defines the initial value of the state. At app start, the <code>customer</code> array is empty (no customers yet).
+      {{"This defines the initial value of the state. At app start, the"| translate}} <code>customer</code> {{"array is
+      empty (no customers yet)." | translate}}
       <pre><code class="typescript">export const initialState: State = &#123;
     customer: &#91;&#93;
   &#125;;
   </code></pre>
     </li>
-  
+
     <li>
-      Reducer Function
+      {{"Reducer Function" | translate}}
       <pre><code class="typescript">export const reducer = createReducer(
     initialState,
     on(CustomerActions.addCustomer, (state: State, &#123; customer &#125;) => (&#123;
@@ -126,111 +140,125 @@
     )
   );
   </code></pre>
-  
-      <pre><p><code>createReducer(initialState, ...)</code>  The Above function creates a reducer with a given initial state.</p></pre>
-  
-      <p>Reducers respond to actions and return a new state based on the current state and the action payload.</p>
-  
+
+      <pre><p><code>createReducer(initialState, ...)</code>  {{"The Above function creates a reducer with a given initial state." | translate}}</p></pre>
+
+      <p>{{"Reducers respond to actions and return a new state based on the current state and the action payload." |
+        translate}}</p>
+
       <ol>
         <li>
           <code>on(CustomerActions.addCustomer, ...)</code><br>
-          <strong>on()</strong> defines what to do when the <code>addCustomer</code> action is dispatched.<br>
-          It listens for the <code>addCustomer</code> action from your <code>CustomerActions</code>.
+          <strong>on()</strong> {{"defines what to do when the" | translate}} <code>addCustomer</code> {{"action is
+          dispatched." | translate}}<br>
+          {{"It listens for the" | translate}} <code>addCustomer</code> {{"action from your" | translate}}
+          <code>CustomerActions</code>.
         </li>
-  
+
         <li>
-          Reducer Function <code>(state, &#123; customer &#125;) =&gt; ( ... )</code><br>
-          When <code>addCustomer</code> is dispatched, this function is called with:<br>
-          <code>state</code>: the current state (object with customer array).<br>
-          <code>&#123; customer &#125;</code>: the payload from the action (likely defined like <code>addCustomer(&#123; customer: Customer &#125;)</code>).
+          {{"Reducer Function" | translate}} <code>(state, &#123; customer &#125;) =&gt; ( ... )</code><br>
+          {{"When" | translate}} <code>addCustomer</code> {{"is dispatched, this function is called with:" |
+          translate}}<br>
+          <code>state</code>: {{"the current state (object with customer array)." | translate}}<br>
+          <code>&#123; customer &#125;</code>: {{"the payload from the action (likely defined like" | translate}}
+          <code>addCustomer(&#123; customer: Customer &#125;)</code>).
         </li>
-  
+
         <li>
-          Return statement:<br>
+          {{"Return statement:"| translate}}<br>
           <code>return &#123; ...state, customer: [ ...state.customer, customer ] &#125;</code><br>
-          You return a new state object:<br>
-          - Spread the existing state to keep all properties (<code>...state</code>)<br>
-          - Replace the <code>customer</code> property with a new array that:<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;• Copies all existing customers (<code>...state.customer</code>)<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;• Adds the new customer to the end.<br>
-          This ensures immutability – the state is not modified in place, but a new state object is returned.
+          {{"You return a new state object:" | translate}}<br>
+          - {{"Spread the existing state to keep all properties" | translate}} (<code>...state</code>)<br>
+          - {{"Replace the" | translate}} <code>customer</code> {{"property with a new array that:" | translate}}<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;• {{"Copies all existing" | translate}} customers (<code>...state.customer</code>)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;• {{"Adds the new customer to the end" | translate}}.<br>
+          {{"This ensures immutability" | translate}} – {{"the state is not modified in place, but a new state object is
+          returned." | translate}}
         </li>
       </ol>
     </li>
   </ol>
-  
-  <h4 class="mt-4 mb-2">Step 8: <code>ng g selector &#123;name&#125;</code></h4>
-  
+
+  <h4 class="mt-4 mb-2">{{"Step 8:" | translate}} <code>ng g selector &#123;name&#125;</code></h4>
+
   <ol class="mb-4">
     <li>
-      <p>Import selector helpers:</p>
+      <p>{{"Import selector helpers:" | translate}}</p>
       <pre><code>import &#123; createFeatureSelector, createSelector &#125; from '&#64;ngrx/store';</code></pre>
       <ul>
-        <li><code>createFeatureSelector</code>: A helper to select a slice of the state tree by feature key.</li>
-        <li><code>createSelector</code>: A function to build memoized selectors based on one or more input selectors.</li>
+        <li><code>createFeatureSelector</code>: {{"A helper to select a slice of the state tree by feature key." |
+          translate}}</li>
+        <li><code>createSelector</code>: {{"A function to build memoized selectors based on one or more input
+          selectors." | translate}}</li>
       </ul>
     </li>
-  
+
     <li>
-      <p>Import the customer reducer with alias:</p>
+      <p>{{"Import the customer reducer with alias:"| translate}}</p>
       <pre><code>import * as customerReducer from '../../store/reducer/customer.reducer';</code></pre>
-      <p>This imports everything from the <code>customer.reducer</code> file and aliases it as <code>customerReducer</code>, allowing access to:</p>
+      <p>{{"This imports everything from the"| translate}} <code>customer.reducer</code> {{"file and aliases it as"|
+        translate}} <code>customerReducer</code>, {{"allowing access to:"| translate}}</p>
       <ul>
         <li><code>customerFeatureKey</code></li>
         <li><code>CustomerState</code></li>
       </ul>
     </li>
-  
+
     <li>
-      <p>Create a feature selector:</p>
+      <p>{{"Create a feature selector:"| translate}}</p>
       <pre><code class="typescript">export const SelectCustomerState = createFeatureSelector&lt;customerReducer.CustomerState&gt;(
     customerReducer.customerFeatureKey
   );</code></pre>
-      <p><code>createFeatureSelector&lt;T&gt;(key)</code> creates a selector for a feature slice of the state.</p>
-      <p>It expects a feature key (<code>customerFeatureKey</code>), which tells NgRx where in the global state tree the customer state lives.</p>
-      <p><code>customerReducer.CustomerState</code> is the type of the state in that feature.</p>
+      <p><code>createFeatureSelector&lt;T&gt;(key)</code> {{"creates a selector for a feature slice of the state."|
+        translate}}</p>
+      <p>{{"It expects a feature key"| translate}} (<code>customerFeatureKey</code>), {{"which tells NgRx where in the
+        global state tree the customer state lives."| translate}}</p>
+      <p><code>customerReducer.CustomerState</code> {{"is the type of the state in that feature."| translate}}</p>
     </li>
-  
+
     <li>
-      <p>Create a selector to select customers:</p>
+      <p>{{"Create a selector to select customers:"| translate}}</p>
       <pre><code class="typescript">export const selectCustomers = createSelector(
     SelectCustomerState,
     (state: customerReducer.CustomerState) =&gt; state.customer
   );</code></pre>
-      <p>This selector depends on <code>SelectCustomerState</code>.</p>
-      <p>Once it gets the <code>CustomerState</code>, it accesses the <code>.customer</code> property (e.g., an array of customers).</p>
-      <p><code>selectCustomers</code> can now be used in components to retrieve the actual list of customers from the store.</p>
+      <p>{{"This selector depends on"| translate}} <code>SelectCustomerState</code>.</p>
+      <p>{{"Once it gets the"| translate}} <code>CustomerState</code>, {{"it accesses the"| translate}}
+        <code>.customer</code> {{"property (e.g., an array of customers)."| translate}}</p>
+      <p><code>selectCustomers</code> {{"can now be used in components to retrieve the actual list of customers from the
+        store."| translate}}</p>
     </li>
   </ol>
-  
-  <table border="1" cellpadding="6" cellspacing="0" style="border-collapse: collapse; width: 100%;" class="table table-bordered table-striped">
+
+  <table border="1" cellpadding="6" cellspacing="0" style="border-collapse: collapse; width: 100%;"
+    class="table table-bordered table-striped">
     <thead class="table-dark">
       <tr>
-        <th>Operation</th>
-        <th>What You Use in Component</th>
-        <th>Description</th>
+        <th>{{"Operation"| translate}}</th>
+        <th>{{"What You Use in Component"| translate}}</th>
+        <th>{{"Description" | translate}}</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><strong>Add</strong></td>
+        <td><strong>{{"Add"| translate}}</strong></td>
         <td><code>store.dispatch(add())</code></td>
-        <td>Push new data into state</td>
+        <td>{{"Push new data into state"| translate}}</td>
       </tr>
       <tr>
-        <td><strong>Delete</strong></td>
+        <td><strong>{{"Delete"| translate}}</strong></td>
         <td><code>store.dispatch(delete())</code></td>
-        <td>Remove data from state</td>
+        <td>{{"Remove data from state"| translate}}</td>
       </tr>
       <tr>
-        <td><strong>Update</strong></td>
+        <td><strong>{{"Update"| translate}}</strong></td>
         <td><code>store.dispatch(update())</code></td>
-        <td>Modify existing data</td>
+        <td>{{"Modify existing data"| translate}}</td>
       </tr>
       <tr>
-        <td><strong>View</strong></td>
+        <td><strong>{{"View"| translate}}</strong></td>
         <td><code>store.select(selector)</code></td>
-        <td>Read or observe data from the store</td>
+        <td>{{"Read or observe data from the store" | translate}}</td>
       </tr>
     </tbody>
   </table>

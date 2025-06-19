@@ -8,12 +8,32 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" routerLink="/guideline" routerLinkActive="active">NgRx Guideline</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/guideJS" routerLinkActive="active">JavaScript Guide</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/analogy" routerLinkActive="active">NgRx Analogy</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/example" routerLinkActive="active">NgRx Example</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/weather" routerLinkActive="active">Weather Report</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/queAns" routerLinkActive="active">Grill Zone</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/guideline" routerLinkActive="active">{{"NgRx Guideline" | translate}}</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/guideJS" routerLinkActive="active">{{"JavaScript Guide" | translate}}</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/analogy" routerLinkActive="active">{{"NgRx Analogy" | translate}}</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/example" routerLinkActive="active">{{"NgRx Example" | translate}}</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/weather" routerLinkActive="active">{{"Weather Report" | translate}}</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/queAns" routerLinkActive="active">{{"Grill Zone" | translate}}</a></li>
+        <div dropdown #langDropdown="bs-dropdown" class="dropdown">
+          <button id="dropdown-basic" dropdownToggle type="button" class="btn btn-light">
+            <img [src]="'assets/flags/' + currentLang + '.png'" class="lang-flag" alt="Lang Flag" />
+          </button>
+        
+          <ul *dropdownMenu class="dropdown-menu fix-dropdown show" aria-labelledby="dropdown-basic">
+            <li>
+              <a class="dropdown-item" (click)="switchLang('en'); langDropdown.hide()">
+                <img src="assets/flags/en.png" class="lang-flag"> English
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" (click)="switchLang('ta'); langDropdown.hide()">
+                <img src="assets/flags/ta.png" class="lang-flag"> தமிழ்
+              </a>
+            </li>
+          </ul>
+        </div>
+        
+        
       </ul>
     </div> 
   </div>

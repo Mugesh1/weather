@@ -1,52 +1,54 @@
 <div class="container my-4">
   <div class="card shadow-sm border-0">
     <div class="card-body">
-      <h4 class="card-title">Example: NgRx Store Concept — A Bank Analogy</h4>
+      <h4 class="card-title">{{ "Example: NgRx Store Concept — A Bank Analogy" | translate }}</h4>
 
-      <p>Think of the NgRx Store like a Bank.</p>
-      <p>The <strong>Store</strong> is the Bank — a central, secure place that holds your data (like the bank holds your money).</p>
-      <p>The <strong>State</strong> in the store is like the account balance — it contains your information.</p>
-      <p>Multiple customers (or parts of your application) can interact with the bank, but no one can directly take or put money into it.</p>
-      <p>Even though it's your money, you cannot directly credit or debit your account. You must follow specific procedures like:</p>
+      <p>{{ "Think of the NgRx Store like a Bank." | translate }}</p>
+      <p>{{ "The Store is the Bank — a central, secure place that holds your data (like the bank holds your money)." | translate }}</p>
+      <p>{{ "The State in the store is like the account balance — it contains your information." | translate }}</p>
+      <p>{{ "Multiple customers (or parts of your application) can interact with the bank, but no one can directly take or put money into it." | translate }}</p>
+      <p>{{ "Even though it's your money, you cannot directly credit or debit your account. You must follow specific procedures like:" | translate }}</p>
+
       <ul>
-        <li>Filling a deposit form or</li>
-        <li>Submitting a withdrawal request</li>
+        <li>{{ "Filling a deposit form or" | translate }}</li>
+        <li>{{ "Submitting a withdrawal request" | translate }}</li>
       </ul>
-      <p>These forms are like <strong>Actions</strong> in NgRx.</p>
-      <p>And just like the bank has a teller or a system to process your request, NgRx has a <strong>Reducer</strong> that handles the action and updates the state immutably — meaning it creates a new version of the state, rather than modifying it directly.</p>
+
+      <p>{{ "These forms are like Actions in NgRx." | translate }}</p>
+      <p>{{ "And just like the bank has a teller or a system to process your request, NgRx has a Reducer that handles the action and updates the state immutably — meaning it creates a new version of the state, rather than modifying it directly." | translate }}</p>
 
       <div class="table-responsive mt-4">
         <table class="table table-bordered table-hover align-middle">
           <thead class="table-dark">
             <tr>
-              <th scope="col">Bank Concept</th>
-              <th scope="col">NgRx Equivalent</th>
+              <th scope="col">{{ "Bank Concept" | translate }}</th>
+              <th scope="col">{{ "NgRx Equivalent" | translate }}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Bank</td>
-              <td>Store</td>
+              <td>{{ "Bank" | translate }}</td>
+              <td>{{ "Store" | translate }}</td>
             </tr>
             <tr>
-              <td>Account Balance</td>
-              <td>State</td>
+              <td>{{ "Account Balance" | translate }}</td>
+              <td>{{ "State" | translate }}</td>
             </tr>
             <tr>
-              <td>Deposit/Withdrawal Form</td>
-              <td>Action</td>
+              <td>{{ "Deposit/Withdrawal Form" | translate }}</td>
+              <td>{{ "Action" | translate }}</td>
             </tr>
             <tr>
-              <td>Teller/Processing System</td>
-              <td>Reducer</td>
+              <td>{{ "Teller/Processing System" | translate }}</td>
+              <td>{{ "Reducer" | translate }}</td>
             </tr>
             <tr>
-              <td>Immutable Ledger</td>
-              <td>Immutable State Updates</td>
+              <td>{{ "Immutable Ledger" | translate }}</td>
+              <td>{{ "Immutable State Updates" | translate }}</td>
             </tr>
             <tr>
-              <td>Statement View</td>
-              <td>Selector</td>
+              <td>{{ "Statement View" | translate }}</td>
+              <td>{{ "Selector" | translate }}</td>
             </tr>
           </tbody>
         </table>

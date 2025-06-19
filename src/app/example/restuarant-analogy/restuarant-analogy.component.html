@@ -1,51 +1,43 @@
-<div class="container my-4">
-  <div class="card shadow-sm border-0">
-    <div class="card-body">
-      <h4 class="card-title">Example: NgRx Store Concept — A Restaurant Analogy</h4>
-
-      <p>Think of the NgRx Store like a Restaurant.</p>
-      <p>The <strong>Store</strong> is the Restaurant — the central place where all orders and food preparation happen.</p>
-      <p>The <strong>State</strong> is like the kitchen’s order book — it keeps track of all current orders.</p>
-      <p><strong>Customers</strong> (or parts of your application) place orders, but they cannot directly change the kitchen’s order book.</p>
-      <p>Instead, they send requests (<strong>Actions</strong>) to the restaurant staff.</p>
-      <p>The kitchen staff (<strong>Reducer</strong>) processes these requests and updates the order book <em>immutably</em> — creating a new order list rather than changing the old one.</p>
-
-      <div class="table-responsive mt-4">
-        <table class="table table-bordered table-hover align-middle">
-          <thead class="table-dark">
-            <tr>
-              <th scope="col">Restaurant Concept</th>
-              <th scope="col">NgRx Equivalent</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Restaurant</td>
-              <td>Store</td>
-            </tr>
-            <tr>
-              <td>Order Book (Kitchen’s list)</td>
-              <td>State</td>
-            </tr>
-            <tr>
-              <td>Customer’s Order</td>
-              <td>Action</td>
-            </tr>
-            <tr>
-              <td>Kitchen Staff</td>
-              <td>Reducer</td>
-            </tr>
-            <tr>
-              <td>Updated Order Book (Immutable)</td>
-              <td>Immutable State Updates</td>
-            </tr>
-            <tr>
-              <td>Waiter Reporting Order Status</td>
-              <td>Selector</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+<h4 class="card-title">{{ "Example: NgRx Store Concept — A Restaurant Analogy" | translate }}</h4>
+<p>{{ "Think of the NgRx Store like a Restaurant." | translate }}</p>
+<p>{{ "The Store is the Restaurant — the central place where all orders and food preparation happen." | translate }}</p>
+<p>{{ "The State is like the kitchen’s order book — it keeps track of all current orders." | translate }}</p>
+<p>{{ "Customers (or parts of your application) place orders, but they cannot directly change the kitchen’s order book." | translate }}</p>
+<p>{{ "Instead, they send requests (Actions) to the restaurant staff." | translate }}</p>
+<p>{{ "The kitchen staff (Reducer) processes these requests and updates the order book immutably — creating a new order list rather than changing the old one." | translate }}</p>
+<div class="table-responsive mt-4">
+  <table class="table table-bordered table-hover align-middle">
+<thead class="table-dark">
+  <tr>
+    <th scope="col">{{ "Restaurant Concept" | translate }}</th>
+    <th scope="col">{{ "NgRx Equivalent" | translate }}</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>{{ "Restaurant" | translate }}</td>
+    <td>{{ "Store" | translate }}</td>
+  </tr>
+  <tr>
+    <td>{{ "Order Book (Kitchen’s list)" | translate }}</td>
+    <td>{{ "State" | translate }}</td>
+  </tr>
+  <tr>
+    <td>{{ "Customer’s Order" | translate }}</td>
+    <td>{{ "Action" | translate }}</td>
+  </tr>
+  <tr>
+    <td>{{ "Kitchen Staff" | translate }}</td>
+    <td>{{ "Reducer" | translate }}</td>
+  </tr>
+  <tr>
+    <td>{{ "Updated Order Book (Immutable)" | translate }}</td>
+    <td>{{ "Immutable State Updates" | translate }}</td>
+  </tr>
+  <tr>
+    <td>{{ "Waiter Reporting Order Status" | translate }}</td>
+    <td>{{ "Selector" | translate }}</td>
+  </tr>
+</tbody>
+</table>
 </div>
